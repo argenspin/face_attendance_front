@@ -1,0 +1,18 @@
+.sidebar {
+    top:0;
+    left: 0;
+    min-height: 100vh;
+    max-height: fit-content;
+    min-width: 250px;
+    max-width: 250px;
+    position: fixed;
+    color: #1c4548;
+    transition: all 0.5s;
+    margin-left: 0;
+    transition: all 0.5s, height 0s;
+  }
+
+
+.active{
+  color:rgb(99, 220, 101);
+}

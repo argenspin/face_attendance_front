@@ -1,0 +1,22 @@
+body{
+    background-color: rgb(242, 244, 246);
+}
+.cam{
+    margin-left: auto;
+    margin-right: auto;
+    height: 500px;
+    width: 500px;
+}
+.verify_button{
+    display: 'flex';
+    margin-left: auto;
+    margin-right: auto;
+    height: 75px;
+    width: 100px;
+}
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: justify;
+  }

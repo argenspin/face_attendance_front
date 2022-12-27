@@ -1,0 +1,16 @@
+.home{
+    display: flex;
+    height: 100%;
+    min-height: 100vh;  
+    max-height: fit-content;
+}
+.logout_button{
+    position:absolute;
+    top:35px;
+    right:10px;
+}
+.logged_user{
+    position:absolute;
+    top:10px;
+    right:20px;
+}
