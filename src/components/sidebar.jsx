@@ -3,7 +3,7 @@ import '../css/sidebar.css';
 import { Link,NavLink } from "react-router-dom";
 import { Nav,Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' 
-import { faHome,faUser,faSchool, faBook } from "@fortawesome/free-solid-svg-icons";
+import { faHome,faUser,faSchool, faBook, faBookBible, faBookAtlas } from "@fortawesome/free-solid-svg-icons";
 import {logOutUser} from './home'
 import { axiosInstance } from "./axiosinstance";
 
@@ -12,6 +12,10 @@ function Sidebar(){
     const [studClassName, setStudClassName] = useState('');
     const [userType,setUserType] = useState('')
     const [teacherLink,setTeacherLink] = useState([])
+
+    const LinkClassName = 'hover:bg-slate-700 rounded d-flex align-items-center px-3 ml-1';
+    const SpanClassName = "m-2 sidebar-option text-3xl text-teal-600 font-bold "
+    const faClassName = "text-teal-500"
 
     const ClassNameForLink = ({ isActive }) => (isActive ? (LinkClassName+' bg-slate-700') : LinkClassName)
 
@@ -55,21 +59,17 @@ function Sidebar(){
         getTeacherLink();
     },[userType])
 
-    const LinkClassName = 'hover:bg-slate-700 rounded d-flex align-items-center justify-content-center';
-    const SpanClassName = "m-2 sidebar-option text-3xl text-teal-600 font-bold"
-    const faClassName = "text-teal-500"
-
     return(
         <div className="sidebar bg-gray-800 rounded-r">
             <Nav className="flex-column pt-2 px-1">
-                <Link className="d-flex align-items-center justify-content-center " to='/home'>
+                <NavLink className="d-flex align-items-center justify-content-center " to='/home'>
                 <FontAwesomeIcon className="text-teal-500 hover:text-slate-700" icon={faHome}  size='3x' />
-                </Link>
+                </NavLink>
                 <br/>
                 <br/>
 
                 <NavLink to='dashboard' className={ClassNameForLink}>
-                <FontAwesomeIcon className={faClassName} icon={faSchool}  size='xl' />
+                <FontAwesomeIcon className={faClassName} icon={faBookAtlas}  size='xl' />
                 <span className={SpanClassName}>Dashboard</span>
                 </NavLink>
                 <br/>

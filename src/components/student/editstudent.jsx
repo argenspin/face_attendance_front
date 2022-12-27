@@ -25,19 +25,21 @@ function EditStudent(props){
             }} 
             />)
 
-            setStudClassComponent(<select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " onChange={(e)=>{setNewData(prevState => ({
+            setStudClassComponent(
+            
+            <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={newData['stud_class_name']} onChange={(e)=>{setNewData(prevState => ({
                 ...prevState, ['stud_class_name']:e.target.value
         })
         )
         }} >
-            <option value={newData['stud_class_name']} selected>{newData['stud_class_name']}</option>
+            <option value={newData['stud_class_name']} key={newData['stud_class_name']}>{newData['stud_class_name']}</option>
             {
                 studClasses.map( ({stud_class_name}) => {
                     //This is done to prevent duplication studclassnames
                     if(stud_class_name!==newData['stud_class_name'])
                     {
                     return (
-                        <option value={stud_class_name}>{stud_class_name}</option>
+                        <option value={stud_class_name} key={stud_class_name}>{stud_class_name}</option>
                     )
                     }
                 }

@@ -14,6 +14,8 @@ function Students(props)
     const [studClassName, setStudClassName] = useState('');
     const [userType,setUserType] = useState('')
 
+    const [facePhotoB64,setFacePhotoB64] = useState('')
+
     const [editComponent,setEditComponent] = useState([])
     const [createComponent,setCreateComponent] = useState([])
     const [createButtonDisabled,setCreateButtonDisabled] = useState(false);
@@ -81,6 +83,21 @@ function Students(props)
         settableClassName(tableclassName.replace('opacity-80',''))
     }
 
+    const getStudentPhoto = async(id) => {
+        let face_photo_b64 = '';
+        let form_data = new FormData();
+        form_data.append('id',id)
+        await axiosInstance
+        .post('student/retrieve/',form_data)
+        .then(res=>{
+            face_photo_b64 = res.data['face_photo_b64']
+            setFacePhotoB64(face_photo_b64)
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    }
+
     const createStudent = (e) => {
         e.preventDefault();
         setEditButtonDisabled(true);
@@ -91,16 +108,29 @@ function Students(props)
         )
     }
 
-    const editStudent = (e,student_data) => {
+    const editStudent = async(e,student_data) => {
         e.preventDefault();
+        let face_photo_b64 = '';
+        let form_data = new FormData();
+        form_data.append('id',student_data['id'])
+        await axiosInstance
+        .post('student/retrieve/',form_data)
+        .then(res=>{
+            face_photo_b64 = res.data['face_photo_b64']
+            setFacePhotoB64(face_photo_b64)
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+        student_data['face_photo_b64'] = face_photo_b64;
         setEditButtonDisabled(true);
         setCreateButtonDisabled(true);
         settableClassName(tableclassName+"opacity-80");
         setEditComponent(
             <EditStudent func={effectsAfterEditComponentDisabled} data={student_data} usertype = {userType}/>
         )
-
     }
+
 
     const viewStudent = (e,student_data) => {
         e.preventDefault();
@@ -134,7 +164,7 @@ function Students(props)
         if(userType==='admin')
         {
             setTBodyComponent(
-                students.map(function ( {id,sl_no,name,stud_class_name,dob,face_photo_b64}){
+                students.map(function ( {id,sl_no,name,stud_class_name,dob}){
                     console.log(students.length)
                     return <tr key={id} className={tdtrclassName}>
                         <td key={sl_no} className={tdclassName}>{sl_no}</td>
@@ -142,7 +172,7 @@ function Students(props)
                         <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
                         <td key={dob} className={tdclassName}>{dob}</td>
                         <td key={"options"} className={tdclassName}>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded" type="button" disabled={editButtonDisabled} onClick={(e) => {editStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob,'face_photo_b64':face_photo_b64})}}>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded" type="button" disabled={editButtonDisabled} onClick={(e) => {editStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
                     Edit
                 </button>
                 &nbsp;&nbsp;
@@ -159,7 +189,7 @@ function Students(props)
         else
         {
             setTBodyComponent(
-                students.map(function ( {id,sl_no,name,stud_class_name,dob,face_photo_b64}){
+                students.map(function ( {id,sl_no,name,stud_class_name,dob}){
                     console.log(students.length)
                     return <tr key={id} className={tdtrclassName}>
                         <td key={sl_no} className={tdclassName}>{sl_no}</td>
@@ -167,7 +197,7 @@ function Students(props)
                         <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
                         <td key={dob} className={tdclassName}>{dob}</td>
                         <td key={"options"} className={tdclassName}>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded" type="button" disabled={editButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob,'face_photo_b64':face_photo_b64})}}>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded" type="button" disabled={editButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
                     View
                 </button>
 

@@ -70,7 +70,7 @@ axiosInstance.interceptors.request.use(
         localStorage.setItem('refresh',res.data['refresh']);
         localStorage.setItem('access',res.data['access']);
         console.log("asdasd");
-        navigate('/home')
+        navigate('/home/dashboard')
 
       } )
       .catch(err => {
@@ -126,7 +126,7 @@ axiosInstance.interceptors.request.use(
   {
     //props.func(username) //Calling the 'func' props to return value to parent component
     return(
-      <Navigate to='/home'/>
+      <Navigate to='/home/dashboard'/>
     
     )
   }

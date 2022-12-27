@@ -37,7 +37,6 @@ function CreateStudent(props){
         axiosInstance
         .post('student/create/',form_data)
         .then(res=>{
-            console.log(res.data)
             props.func('save');
 
         })
@@ -93,16 +92,16 @@ function CreateStudent(props){
             />
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Class:</label>
-            <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " onChange={(e)=>{setNewData(prevState => ({
+            <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={''} onChange={(e)=>{setNewData(prevState => ({
                     ...prevState, ['stud_class_name']:e.target.value
             })
             )
             }} >
-                <option value={''}></option>
+                <option value={''} key={''}></option>
                 {
                     studClasses.map( ({stud_class_name}) => {
                         return (
-                            <option value={stud_class_name}>{stud_class_name}</option>
+                            <option value={stud_class_name} key={stud_class_name}>{stud_class_name}</option>
                         )
                     }
                 )

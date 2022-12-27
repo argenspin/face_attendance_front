@@ -133,9 +133,6 @@ function Home(props) {
                 console.log(accessValid);
             },[]
             )
-    useEffect(()=>{
-        navigate('dashboard')
-    },[])
 
     if(accessValid && localStorage.getItem('access')) //Check if user is logged in
     {
