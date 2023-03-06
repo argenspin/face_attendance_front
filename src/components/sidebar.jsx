@@ -12,8 +12,11 @@ function Sidebar(){
     const [studClassName, setStudClassName] = useState('');
     const [userType,setUserType] = useState('')
     const [teacherLink,setTeacherLink] = useState([])
+    const [classesLink,setClassesLink] = useState([])
+    const [subjectsLink,setSubjectsLink] = useState([])
 
-    const LinkClassName = 'hover:bg-slate-700 rounded d-flex align-items-center px-3 ml-1';
+
+    const LinkClassName = 'hover:bg-slate-700 rounded d-flex align-items-center px-3 ml-1 mb-4';
     const SpanClassName = "m-2 sidebar-option text-3xl text-teal-600 font-bold "
     const faClassName = "text-teal-500"
 
@@ -35,13 +38,47 @@ function Sidebar(){
         if(userType==='admin')
         {
             setTeacherLink(
-                <div>
+
                 <NavLink className={ClassNameForLink} to='teachers'>
                 <FontAwesomeIcon className={faClassName} icon={faUser}  size='xl' />
                 <span className={SpanClassName}>Teachers</span>
                 </NavLink>
-                <br/>
-                </div>
+            )
+        }
+        else{
+            setTeacherLink(
+                null
+            )
+        }
+    }
+
+    const getClassesLink = () => {
+        if(userType==='admin')
+        {
+            setClassesLink(
+
+                <NavLink className={ClassNameForLink} to='classes'>
+                <FontAwesomeIcon className={faClassName} icon={faUser}  size='xl' />
+                <span className={SpanClassName}>Classes</span>
+                </NavLink>
+            )
+        }
+        else{
+            setClassesLink(
+                null
+            )
+        }
+    }
+
+    const getSubjectsLink = () => {
+        if(userType==='admin')
+        {
+            setSubjectsLink(
+
+                <NavLink className={ClassNameForLink} to='subjects'>
+                <FontAwesomeIcon className={faClassName} icon={faBook}  size='xl' />
+                <span className={SpanClassName}>Subjects</span>
+                </NavLink>
             )
         }
         else{
@@ -57,28 +94,32 @@ function Sidebar(){
 
     useEffect(()=>{
         getTeacherLink();
+        getClassesLink();
+        getSubjectsLink();
     },[userType])
 
     return(
-        <div className="sidebar bg-gray-800 rounded-r">
+        <div className="sidebar bg-stone-900 rounded-r-3xl">
             <Nav className="flex-column pt-2 px-1">
-                <NavLink className="d-flex align-items-center justify-content-center " to='/home'>
+                <NavLink className="d-flex align-items-center justify-content-center mb-10 " to='/home'>
                 <FontAwesomeIcon className="text-teal-500 hover:text-slate-700" icon={faHome}  size='3x' />
                 </NavLink>
-                <br/>
-                <br/>
+                {/* <br/>
+                <br/> */}
 
                 <NavLink to='dashboard' className={ClassNameForLink}>
                 <FontAwesomeIcon className={faClassName} icon={faBookAtlas}  size='xl' />
                 <span className={SpanClassName}>Dashboard</span>
                 </NavLink>
-                <br/>
+                {/* <br/> */}
                 <NavLink className={ClassNameForLink} to='students'>
                 <FontAwesomeIcon className={faClassName} icon={faUser}  size='xl' />
                 <span className={SpanClassName}>Students</span>
                 </NavLink>
-                <br/>
+                {/* <br/> */}
                 {teacherLink}
+                {classesLink}
+                {subjectsLink}
                 <NavLink  className={ClassNameForLink} to='attendance'>
                 <FontAwesomeIcon className={faClassName} icon={faBook}  size='xl' />
                 <span className={SpanClassName}>Attendance</span>

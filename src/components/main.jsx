@@ -9,7 +9,7 @@ import {
 import NavBar from './NavBar';
 import Login from './login';
 import Registration from "./registration";
-import Monitoring from "./monitoring";
+import Monitoring from "./monitoring/monitoring";
 import About from "./about";
 import Home from "./home";
 import { useLayoutEffect } from "react";
@@ -30,7 +30,7 @@ function Main(){
 
 
         return (
-            <div>
+            <div className="min-h-screen bg-[#1b2121]">
                 {/*<NavBar/>*/}
             
                 <Routes>

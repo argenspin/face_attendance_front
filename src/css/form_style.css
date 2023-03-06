@@ -5,17 +5,4 @@ label {
     padding-left: 2%;
   }
 
-  .edit_form {
 
-    height: 300px;
-    width:80%;
-    position: absolute;
-    z-index: 9;
-  }
-  .create_form {
-    min-height: 400px;
-    max-height: 800px;
-    width:80%;
-    position: absolute;
-    z-index: 9;
-  }

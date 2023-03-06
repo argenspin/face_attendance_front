@@ -88,16 +88,21 @@ axiosInstance.interceptors.request.use(
 
   return(
     <div>
+
     <NavBar/>
+  <div className="flex flex-row max-h-fit justify-center items-center m-4">
+    <h2 className="text-gray-400 font-bold h2" >Login</h2>
+    </div>
     <div className="container-fluid">
-		<div className="flex flex-wrap  main-content bg-green-500 text-center">
+
+		<div className="flex flex-wrap  main-content bg-gray-500 text-center">
 			<div className="md:w-1/3 pr-4 pl-4 text-center company__info">
 				<img src={userlogo}/>
 			</div>
 			<div className="md:w-2/3 sm:w-full pr-4 pl-4 login_form ">
 				<div className="container max-w-full mx-auto sm:px-4">
 					<div className="flex flex-wrap ">
-						<h2>Log In</h2>
+						
 					</div>
 					<div className="flex flex-wrap ">
 						<form control="" className="mb-4">

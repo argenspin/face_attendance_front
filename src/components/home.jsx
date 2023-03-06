@@ -12,12 +12,13 @@ import { useEffect } from 'react';
 import { useLayoutEffect } from 'react';
 import Sidebar from './sidebar';
 import { Container } from 'react-bootstrap';
-import '../css/home_page.css'
 import Students from './student/students';
 import '../css/index.css'
 import Teacher from './teacher/teachers';
 import Dashboard from './dashboard';
 import { axiosInstance } from './axiosinstance';
+import StudClass from './studclass/studclasses';
+import Subjects from './subjects/subjects';
 
 function Home(props) {
 
@@ -140,7 +141,7 @@ function Home(props) {
         {
             return(
                 <div>
-                    <h1>This teacher has not been assigned a class yet</h1>
+                    <h1 className='font-bold text-white h3'>This teacher has not been assigned a class yet</h1>
                     <button className='inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-red-600 text-white hover:bg-red-700 logout_button' type='button' onClick={logOutUser}>Logout</button>
 
                 </div>
@@ -150,18 +151,21 @@ function Home(props) {
         {
         //requestWithToken();
             return(
-                <div className='home bg-slate-600'>
+                <div className='flex h-full min-h-screen min-w-max max-h-fit bg-[#1c2226]'>
                         <Sidebar/>
                         <Container className="relative ml-64 ">
+                        <div className='inline-block align-middle'>
+                            <h6 className='absolute top-2 right-5 text-white font-bold'>{userType}: {loggedUser}</h6>
+                            <button className=' text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-red-600 text-white hover:bg-red-700 absolute top-9 right-5' type='button' onClick={logOutUser}>Logout</button>
+                        </div>
                         <Routes>
                             <Route path='/dashboard' element={<Dashboard/>} />
                             <Route path='/students' element={<Students />} />
                             <Route path='/teachers' element={<Teacher/>} />
+                            <Route path='/classes' element={<StudClass/>} />
+                            <Route path='/subjects' element={<Subjects/>} />
                         </Routes>
                     
-                    <h6 className='logged_user font-bold'>{userType}: {loggedUser}</h6>
-                    <button className='inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-red-600 text-white hover:bg-red-700 logout_button' type='button' onClick={logOutUser}>Logout</button>
-
                     </Container>
                 </div>
             )

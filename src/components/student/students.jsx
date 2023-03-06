@@ -6,8 +6,10 @@ import { axiosInstance } from "../axiosinstance";
 import FaceCapture from "./facecapture";
 import CreateStudent from "./createstudent";
 import EditStudent from "./editstudent";
+import ViewStudent from "./viewstudent";
+import { FadeLoader } from 'react-spinners';
 
-function Students(props)
+function Students()
 {
     const [students,setStudents] = useState([])
     const [studClasses,setStudClasses] = useState([])
@@ -16,33 +18,67 @@ function Students(props)
 
     const [facePhotoB64,setFacePhotoB64] = useState('')
 
+    const [componentCreateEditView,setComponentCreateEditView] = useState([])
+
     const [editComponent,setEditComponent] = useState([])
     const [createComponent,setCreateComponent] = useState([])
     const [createButtonDisabled,setCreateButtonDisabled] = useState(false);
     const [editButtonDisabled,setEditButtonDisabled] = useState(false);
+    const [deleteButtonDisabled,setDeleteButonDisabled] = useState(false)
+    const [viewButtonDisabled,setViewButtonDisabled] = useState(false)
+
+    const [loadingState, setLoadingState] = useState(false)
 
     const [tBodyComponent,setTBodyComponent] = useState([])
     const [topButtons,setTopButtons] = useState([])
 
-    const effectsAfterCreateComponentDisabled = (save_or_cancel) => {
-        if(save_or_cancel==='save')
-        {
-            getStudents();
-        }
-        setEditButtonDisabled(false);
-        setCreateButtonDisabled(false);
-        setCreateComponent([]);
-        resetTableOpacity();
+    // const effectsAfterCreateComponentDisabled = (save_or_cancel) => {
+    //     if(save_or_cancel==='save')
+    //     {
+    //         getStudents();
+    //     }
+    //     setEditButtonDisabled(false);
+    //     setCreateButtonDisabled(false);
+    //     setCreateComponent([]);
+    //     resetTableOpacity();
+    // }
+
+    // const effectsAfterEditComponentDisabled = (save_or_cancel) => {
+    //     if(save_or_cancel==='save')
+    //     {
+    //         getStudents();
+    //     }
+    //     setEditButtonDisabled(false);
+    //     setCreateButtonDisabled(false);
+    //     setEditComponent([]);
+    //     resetTableOpacity();
+    // }
+
+    const disableAllButtons = () => {
+        setEditButtonDisabled(true);
+        setCreateButtonDisabled(true);
+        setDeleteButonDisabled(true)
     }
 
-    const effectsAfterEditComponentDisabled = (save_or_cancel) => {
-        if(save_or_cancel==='save')
-        {
-            getStudents();
-        }
+    const enableAllButtons = () => {
         setEditButtonDisabled(false);
         setCreateButtonDisabled(false);
-        setEditComponent([]);
+        setDeleteButonDisabled(false)
+
+    }
+
+    const effectsAfterCreateEditViewComponentDisabled = (save_or_cancel) => {
+        if(save_or_cancel==='save')
+        {
+            setLoadingState(true)
+            getStudents();
+            setTimeout(()=>{
+                setLoadingState(false)
+            },1500)
+        }
+
+        enableAllButtons();
+        setComponentCreateEditView([]);
         resetTableOpacity();
     }
 
@@ -58,9 +94,9 @@ function Students(props)
         })
     }
 
-
+    //identifying which stud_class students to be retrieved are done in backend using access token
     const getStudents = () => {
-        setStudents([])
+        //setStudents([])
         console.log(userType)
         axiosInstance
         .get('student/retrieve/')
@@ -83,32 +119,54 @@ function Students(props)
         settableClassName(tableclassName.replace('opacity-80',''))
     }
 
-    const getStudentPhoto = async(id) => {
-        let face_photo_b64 = '';
-        let form_data = new FormData();
-        form_data.append('id',id)
-        await axiosInstance
-        .post('student/retrieve/',form_data)
-        .then(res=>{
-            face_photo_b64 = res.data['face_photo_b64']
-            setFacePhotoB64(face_photo_b64)
-        })
-        .catch(err=>{
-            console.log(err);
-        })
-    }
+    // const getStudentPhoto = async(id) => {
+    //     let face_photo_b64 = '';
+    //     let form_data = new FormData();
+    //     form_data.append('id',id)
+    //     await axiosInstance
+    //     .post('student/retrieve/',form_data)
+    //     .then(res=>{
+    //         face_photo_b64 = res.data['face_photo_b64']
+    //         setFacePhotoB64(face_photo_b64)
+    //     })
+    //     .catch(err=>{
+    //         console.log(err);
+    //     })
+    // }
 
     const createStudent = (e) => {
         e.preventDefault();
-        setEditButtonDisabled(true);
-        setCreateButtonDisabled(true);
+        disableAllButtons();
         settableClassName(tableclassName+"opacity-80");
-        setCreateComponent(
-            <CreateStudent show={true} func={effectsAfterCreateComponentDisabled} usertype = {userType}/>
+        setComponentCreateEditView(
+            <CreateStudent show={true} ondone={effectsAfterCreateEditViewComponentDisabled} usertype = {userType}/>
         )
     }
 
     const editStudent = async(e,student_data) => {
+        e.preventDefault();
+        let form_data = new FormData();
+        form_data.append('id',student_data['id'])
+        await axiosInstance
+        .post('student/retrieve/',form_data)
+        .then(res=>{
+            student_data['face_photo_b64'] = res.data['face_photo_b64'];
+            //setFacePhotoB64(face_photo_b64)
+        })
+        .catch(err=>{
+            student_data['face_photo_b64'] = ''
+            console.log(err);
+        })
+        disableAllButtons();
+        settableClassName(tableclassName+"opacity-80");
+        setComponentCreateEditView(
+            <EditStudent ondone={effectsAfterCreateEditViewComponentDisabled} data={student_data} usertype = {userType}/>
+        )
+    }
+
+
+
+    const viewStudent = async(e,student_data) => {
         e.preventDefault();
         let face_photo_b64 = '';
         let form_data = new FormData();
@@ -117,28 +175,18 @@ function Students(props)
         .post('student/retrieve/',form_data)
         .then(res=>{
             face_photo_b64 = res.data['face_photo_b64']
+            student_data['face_photo_b64'] = face_photo_b64
             setFacePhotoB64(face_photo_b64)
         })
         .catch(err=>{
             console.log(err);
         })
-        student_data['face_photo_b64'] = face_photo_b64;
         setEditButtonDisabled(true);
         setCreateButtonDisabled(true);
         settableClassName(tableclassName+"opacity-80");
-        setEditComponent(
-            <EditStudent func={effectsAfterEditComponentDisabled} data={student_data} usertype = {userType}/>
-        )
-    }
-
-
-    const viewStudent = (e,student_data) => {
-        e.preventDefault();
-        setEditButtonDisabled(true);
-        setCreateButtonDisabled(true);
-        settableClassName(tableclassName+"opacity-80");
-        setEditComponent(
-            <EditStudent func={effectsAfterEditComponentDisabled} data={student_data} usertype = {userType}/>
+        setComponentCreateEditView(
+            /*<EditStudent func={effectsAfterEditComponentDisabled} data={student_data} usertype = {userType}/>*/
+            <ViewStudent data={student_data} ondone = {effectsAfterCreateEditViewComponentDisabled}/>
         )
 
     }
@@ -172,13 +220,16 @@ function Students(props)
                         <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
                         <td key={dob} className={tdclassName}>{dob}</td>
                         <td key={"options"} className={tdclassName}>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded" type="button" disabled={editButtonDisabled} onClick={(e) => {editStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
-                    Edit
-                </button>
-                &nbsp;&nbsp;
-                <button className="bg-red-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded" type="button" disabled={editButtonDisabled} onClick={(e) => {deleteStudent(e,id)} }>
-                    Delete
-                </button>
+                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" type="button" disabled={viewButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
+                                View
+                            </button>
+                
+                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" type="button" disabled={editButtonDisabled} onClick={(e) => {editStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
+                                Edit
+                            </button>
+                            <button className="bg-red-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded mr-1.5" type="button" disabled={deleteButtonDisabled} onClick={(e) => {deleteStudent(e,id)} }>
+                                Delete
+                            </button>
                         </td>
                     </tr>
             }
@@ -197,9 +248,9 @@ function Students(props)
                         <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
                         <td key={dob} className={tdclassName}>{dob}</td>
                         <td key={"options"} className={tdclassName}>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded" type="button" disabled={editButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
-                    View
-                </button>
+                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded" type="button" disabled={viewButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
+                                View
+                            </button>
 
                         </td>
                     </tr>
@@ -215,25 +266,25 @@ function Students(props)
         {
             setTopButtons(
                 <div>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded m-1" onClick={getStudents}>Refresh</button>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded' disabled={createButtonDisabled} onClick={createStudent}>Create</button>
+                    <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded m-1" onClick={getStudents}>Refresh</button>
+                    <button className='bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded' disabled={createButtonDisabled} onClick={createStudent}>Create</button>
                 </div>
             )
         }
         else
         {
             setTopButtons(
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded m-1" onClick={getStudents}>Refresh</button>
+                <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded m-1" onClick={getStudents}>Refresh</button>
             )
         }
     }
 
     const [tableclassName,settableClassName] = useState("min-w-full min-w-full divide-y divide-gray-200 table-auto dark:divide-gray-700 ")
 
-    const thclassName = "py-2 px-4 text-sm font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400";
+    const thclassName = "py-2 px-4 text-sm font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-200";
     const tdclassName = "py-1 px-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white";
-    const theadclassName = "bg-gray-100 dark:bg-gray-700"
-    const tbodyclassName = "bg-grey-100 divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700"
+    const theadclassName = "bg-gray-100 dark:bg-stone-900"
+    const tbodyclassName = "bg-grey-100 divide-y divide-gray-200 dark:bg-stone-800 dark:divide-gray-700"
     const tdtrclassName = "hover:bg-gray-100 dark:hover:bg-gray-700";
 
     {/*<div className="tb-width">
@@ -249,8 +300,24 @@ function Students(props)
 
     useEffect(()=>{
         getTopButtons();
-        getTBodyComponent();
 
+    },[userType])
+
+    useEffect(()=>{
+        if(loadingState === true)
+        {
+            disableAllButtons();
+        }
+        else
+        {
+            enableAllButtons();
+        }
+
+    },[loadingState])
+
+    useEffect(()=>{
+        getTBodyComponent();
+        getTopButtons();
         //getAllStudClasses();
     }
     ,[createButtonDisabled,createComponent,students])
@@ -263,12 +330,18 @@ function Students(props)
 
     <div>
         <br/>
+        <div className="fixed z-50  m-44 ml-96 bg-transparent">
+            <FadeLoader className="" loading={loadingState} size={20} color={'teal'}/>
+        </div>
         {topButtons}
 
         <div className="m-2 flex flex-col">
         <div className="overflow-x-auto shadow-md sm:rounded-lg">
             <div className="min-w-fit align-middle">
-            {createComponent}{editComponent}
+
+
+            {componentCreateEditView}
+            
                 <div className="overflow-hidden "></div>
         <table className={tableclassName}> 
             <thead className={theadclassName}>

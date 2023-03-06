@@ -12,7 +12,7 @@ function About(){
     return(
         <div>
             <NavBar/>
-            <h1 className="h1">Work in progress</h1>
+            <h1 className="h1 text-white">Work in progress</h1>
             <h1>{name}</h1>
             <button type="button" onClick={showName}>Show</button>`
         </div>

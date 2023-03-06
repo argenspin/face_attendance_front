@@ -2,7 +2,7 @@
 	width: 50%;
 	border-radius: 20px;
 	box-shadow: 0 5px 5px rgba(0,0,0,.4);
-	margin: 5em auto;
+	margin: 1em auto;
 	display: flex;
 }
 .company__info{
@@ -60,9 +60,10 @@ form{
 	border-radius: 4px;
 }
 .btn_login{
+	margin: 2px;
 	transition: all .5s ease;
-	width: 50%;
-	border-radius: 30px;
+	width: 48%;
+	border-radius: 25px;
 	color:#182323;
 	font-weight: 600;
 	background-color: #fff;
