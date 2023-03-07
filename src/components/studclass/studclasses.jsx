@@ -25,6 +25,7 @@ function StudClass(){
         axiosInstance
         .get('studclass/retrieve/')
         .then(res=>{
+            console.log(res.data)
             let data = res.data;
             let k=1;
             for(let i=0;i<data.length;i++)

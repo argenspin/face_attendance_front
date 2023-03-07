@@ -94,6 +94,8 @@ function EditSubject(props){
                 currentLabName = newData['lab_name'];
             } 
             setLabSelectionComponent(
+                <div>
+                <label className="text-white text-sm font-bold mb-2 m-2">Lab:</label>
                 <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={currentLabName} onChange={(e)=>{setNewData(prevState => ({
                     ...prevState, ['lab_name']:e.target.value
             })
@@ -110,6 +112,7 @@ function EditSubject(props){
                 )
                 }
             </select>
+            </div>
             )
         }
         else
@@ -138,7 +141,7 @@ function EditSubject(props){
 
     return(
 
-        <div className='fixed z-40 max-w-full w-2/4 max-h-full h-2/5 m-2 bg-stone-900 rounded'>
+        <div className='fixed z-40 max-w-full w-2/4 max-h-full h-2/4 m-2 bg-stone-900 rounded'>
             <h2 className='rounded text-teal-500 text-3xl font-bold m-2'>Create Subject</h2>
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Subject Name:</label>
@@ -169,7 +172,7 @@ function EditSubject(props){
                 )
                 }
             </select>
-
+            <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Is Lab:</label>
             <input type={'checkbox'} id='is_lab' className="border rounded py-1 px-1 text-gray-700 leading-tight " checked={showLabSelection} onChange={(e)=>{
                 setNewData(prevState => ({
@@ -186,8 +189,7 @@ function EditSubject(props){
 
                 setShowLabSelection(!showLabSelection);
             }} />
-
-            <label className="text-white text-sm font-bold mb-2 m-2">Lab:</label>
+            <br/>
             {/* <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={newData['lab_name']} onChange={(e)=>{setNewData(prevState => ({
                     ...prevState, ['lab_name']:e.target.value
             })
@@ -208,8 +210,6 @@ function EditSubject(props){
                 }
             </select> */}
             {labSelectionComponent}
-            <br/>
-            <br/>
             <br/>
             <div className="m-2">
                 <button className='bg-blue-600 text-white py-1 px-3 m-2 shadow appearance-none border rounded'type="button" onClick={(e)=> {editSubjectSave(e)} }>Save</button> 

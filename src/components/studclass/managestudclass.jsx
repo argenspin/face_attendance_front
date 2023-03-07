@@ -14,6 +14,7 @@ function ManageClass(props){
     const [timeTableWithSubjectNames,setTimeTableWithSubjectNames] = useState({'Monday':[],'Tuesday':[],'Wednesday':[],'Thursday':[],'Friday':[]})
     const [timetable,setTimeTable] = useState({});
     const [timeTableComponent,setTimeTableComponent] = useState([]);
+    const [currentStudClassName,setCurrentStudClassName] = useState(props.data['stud_class_name'])
 
     const getAllTeachersWithoutClass = async() => {
         await axiosInstance
@@ -33,6 +34,7 @@ function ManageClass(props){
         let form_data = new FormData();
         console.log(timetable)
         form_data.append('new_timetable',JSON.stringify(timetable));
+        // form_data.append('current_stud_class_name',currentStudClassName)
         form_data.append("stud_class_name",studClassName);
         form_data.append('is_lab',newData['is_lab'])
         form_data.append('teacher_id',newData['teacher'])
@@ -87,13 +89,14 @@ function ManageClass(props){
             {/* <TimeTable stud_class_name={studClassName} on_set_new_time_table={getNewTimeTableFromChild} timetable={currentTimeTable} timetable_with_subs={timeTableWithSubjectNames} /> */}
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Name:</label>
-            <input  type="text" defaultValue={newData['stud_class_name']} className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
+            <label className=" shadow appearance-none rounded py-1 px-1 text-white ">{studClassName}</label>
+            {/* <input  type="text" defaultValue={newData['stud_class_name']} className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
                         (e)=>{setNewData(prevState => ({
                             ...prevState, ['stud_class_name']:e.target.value
                     })
                     )
                     }} 
-                />
+                /> */}
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Teacher:</label>
             <select id='teachers' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={newData['teacher']} onChange={(e)=>{setNewData(prevState => ({
