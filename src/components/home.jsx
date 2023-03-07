@@ -19,6 +19,7 @@ import Dashboard from './dashboard';
 import { axiosInstance } from './axiosinstance';
 import StudClass from './studclass/studclasses';
 import Subjects from './subjects/subjects';
+import Attendance from './attendance/attendances';
 
 function Home(props) {
 
@@ -164,6 +165,7 @@ function Home(props) {
                             <Route path='/teachers' element={<Teacher/>} />
                             <Route path='/classes' element={<StudClass/>} />
                             <Route path='/subjects' element={<Subjects/>} />
+                            <Route path='/attendance' element={<Attendance/>} />
                         </Routes>
                     
                     </Container>

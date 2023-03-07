@@ -35,7 +35,7 @@ axiosInstance.interceptors.request.use(
     const [foundIds,setFoundIds] = useState({}) //Object of all matching names and their counts as key value pair
     const [matchComplete,setMatchComplete] = useState(false) //Show status of matching
     const [frequentlyMatchedId,setFrequentlyMatchedId] = useState('') //To store the name with is repeated most in foundnames
-    const [camType,setCamType] = useState('environment')
+    const [camType,setCamType] = useState('user')
 
     const [status,setStatus] = useState('Idle')
     const [matchedName,setMatchedName] = useState('NULL')
@@ -45,6 +45,7 @@ axiosInstance.interceptors.request.use(
     const [teacherLoginComponent, setTeacherLoginComponent] = useState([])
     const [adminChangeClassComponent,setAdminChangeClassComponent] = useState([])
     const [verifyButtonDisabled,setVerifyButtonDisabled] = useState(false);
+    const [currentsubject,setCurrentSubject] = useState({'id':null,'subject_name':'Nothing','timetable_subject_index':null})
     //Function to capture images and send to server
     const capture = async() => {
       setStatus('Verifying')
@@ -61,6 +62,8 @@ axiosInstance.interceptors.request.use(
           i++;
          }
          form_data.append('images_to_detect',JSON.stringify(images_to_detect))
+         form_data.append('timetable_subject_index',currentsubject.timetable_subject_index);
+         form_data.append('subject_id',currentsubject.id);
         //form_data.append('face_photo_b64',webcamRef.current.getScreenshot())
 
          //form_data.append('captured_images',JSON.stringify(captured_images))
@@ -69,10 +72,10 @@ axiosInstance.interceptors.request.use(
  //Store imagesrc in FormData object
         //Post request to send the Base64 string of image to server
         await axiosInstance
-        .post('detect/face/', form_data )
+        .post('attendance/marking/', form_data )
         .then(res=> {
             setMatchedName(res.data['matched_name'])
-            setStatus("Verification Complete")
+            setStatus(res.data['verification_status'])
             cancelVerify();
         })
         .catch(err=>{
@@ -86,9 +89,6 @@ axiosInstance.interceptors.request.use(
       }
 
 
-      const markAttendance = (student_id) => {
-        
-      }
       const verifyOn = () => {
         setVerifyMode(true)
       }
@@ -151,6 +151,19 @@ axiosInstance.interceptors.request.use(
         }
       }
 
+      const getCurrentSubject = () => {
+        let form_data = new FormData();
+        form_data.append('stud_class_name',studClassName);
+        axiosInstance
+        .post('attendance/currentsubject/',form_data)
+        .then(res=>{
+          setCurrentSubject(res.data);
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      }
+
       const changeStudClass = () => {
         setVerifyButtonDisabled(true);
         setTeacherLoginComponent(<TeacherLogin onadminlogin={adminChangeClass} onlogin={getStudClass} oncancel={effectsAfterloginComponentDisabled}/>);
@@ -191,6 +204,23 @@ axiosInstance.interceptors.request.use(
         //getStatus();
       },[verifyMode,camType])
 
+
+      // refresh and find the current subject periodically
+      const [count, setCount] = useState(0);
+
+      useEffect(() => {
+       const timeout = setTimeout(() => {
+          setCount(count+1);
+          if(studClassName!='Nil')
+          {
+            getCurrentSubject();
+          }
+        }, 1500);
+    
+       return () => clearTimeout(timeout);
+      },[count]);
+
+
     if(!localStorage.getItem('access'))
     {
       return(
@@ -211,8 +241,8 @@ axiosInstance.interceptors.request.use(
             </div>
               <br/>
             <div className="m-1">
-              <label className="h5 text-white inline">MONITORING STATE:</label>
-              <label className="h5 text-green-500 ">{monitoringState}</label>
+              <label className="h5 text-white inline">SUBJECT:</label>
+              <label className="h5 text-green-500 ">{currentsubject.subject_name}</label>
             </div>
             <br/>
             <div className="m-1">

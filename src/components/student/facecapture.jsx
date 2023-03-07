@@ -9,7 +9,7 @@ const FaceCapture = (props) => {
     const videoConstraints = {
         width: 1280,
         height: 720,
-        facingMode: "environment"
+        facingMode: "user"
       };
     
     const [viewMode,setViewMode] = useState(props.viewmode)

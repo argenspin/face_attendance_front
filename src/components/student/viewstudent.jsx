@@ -8,9 +8,11 @@ function ViewStudent(props){
         <div>
             <div className='fixed z-40 max-w-full w-3/4 max-h-full h-2/3 m-2 bg-stone-900 rounded'>
                 <h2 className='rounded text-teal-500 text-3xl font-bold m-2'>View Student</h2>
+                <br/>
+                <br/>
                 <div>
                     <label className="text-white text-md font-bold mb-2 m-2">Name:</label>
-                    <label className=" shadow appearance-none rounded py-1 px-1 text-white ">{data['name']}</label>
+                    <label className=" shadow appearance-none rounded py-1 px-1 text-white whitespace-nowrap ">{data['name']}</label>
                 </div>
                 <div>
                     <label className="text-white text-md font-bold mb-2 m-2">Class:</label>
