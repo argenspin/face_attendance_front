@@ -6,7 +6,7 @@ function CreateStudent(props){
 
     axiosInstance.defaults.timeout = 15000
 
-    const [newData,setNewData] = useState({'name':'','stud_class_name':'','face_photo_b64':'', 'multiple_images':[]});
+    const [newData,setNewData] = useState({'name':'','stud_class_name':'','face_photo_b64':'', 'multiple_images':[],'register_no':'','dob':''});
     const [studClasses,setStudClasses] = useState([])
     const [faceCaptureComponent,setFaceCaptureComponent] = useState([])
     const [viewMode,setViewMode] = useState('')
@@ -35,6 +35,8 @@ function CreateStudent(props){
         let form_data = new FormData();
         form_data.append('name',newData['name']);
         form_data.append('stud_class_name',newData['stud_class_name']);
+        form_data.append('register_no',newData['register_no']);
+        form_data.append('dob',newData['dob']);
         form_data.append('face_photo_b64',newData['face_photo_b64'])
         form_data.append('multiple_images',JSON.stringify(newData['multiple_images']))
         axiosInstance
@@ -144,6 +146,15 @@ function CreateStudent(props){
             }} 
             />
             <br/>
+            <label className="text-white text-sm font-bold mb-3 m-2">Register No:</label>
+            <input  type="text" id='student_reg_no' className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
+                (e)=>{setNewData(prevState => ({
+                    ...prevState, ['register_no']:e.target.value
+            })
+            )
+            }} 
+            />
+            <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Class:</label>
             <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={''} onChange={(e)=>{setNewData(prevState => ({
                     ...prevState, ['stud_class_name']:e.target.value
@@ -160,7 +171,16 @@ function CreateStudent(props){
                 )
                 }
             </select>
-
+            <br/>
+            <label className="text-white text-sm font-bold mb-3 m-2">Date of Birth:</label>
+            <input  type="date" id='student_dob' className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
+                (e)=>{setNewData(prevState => ({
+                    ...prevState, ['dob']:e.target.value
+            })
+            )
+            }} 
+            />
+            <br/>
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Face:</label>
             <button className='bg-blue-600 text-white py-1 px-3 shadow appearance-none border rounded' type="button" onClick={(e) => { showFaceCaptureComponent(e) } }>Take Photos</button> 

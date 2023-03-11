@@ -212,19 +212,20 @@ function Students()
         if(userType==='admin')
         {
             setTBodyComponent(
-                students.map(function ( {id,sl_no,name,stud_class_name,dob}){
+                students.map(function ( {id,sl_no,name,stud_class_name,register_no,dob}){
                     console.log(students.length)
                     return <tr key={id} className={tdtrclassName}>
                         <td key={sl_no} className={tdclassName}>{sl_no}</td>
                         <td key={name} className={tdclassName}>{name}</td>
-                        <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
+                        <td key={register_no} className={tdclassName}>{register_no}</td>
                         <td key={dob} className={tdclassName}>{dob}</td>
+                        <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
                         <td key={"options"} className={tdclassName}>
-                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" type="button" disabled={viewButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
+                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" type="button" disabled={viewButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'register_no':register_no,'dob':dob})}}>
                                 View
                             </button>
                 
-                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" type="button" disabled={editButtonDisabled} onClick={(e) => {editStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
+                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" type="button" disabled={editButtonDisabled} onClick={(e) => {editStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'register_no':register_no,'dob':dob})}}>
                                 Edit
                             </button>
                             <button className="bg-red-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded mr-1.5" type="button" disabled={deleteButtonDisabled} onClick={(e) => {deleteStudent(e,id)} }>
@@ -240,15 +241,16 @@ function Students()
         else
         {
             setTBodyComponent(
-                students.map(function ( {id,sl_no,name,stud_class_name,dob}){
+                students.map(function ( {id,sl_no,name,stud_class_name,register_no,dob}){
                     console.log(students.length)
                     return <tr key={id} className={tdtrclassName}>
                         <td key={sl_no} className={tdclassName}>{sl_no}</td>
                         <td key={name} className={tdclassName}>{name}</td>
-                        <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
+                        <td key={register_no} className={tdclassName}>{register_no}</td>
                         <td key={dob} className={tdclassName}>{dob}</td>
+                        <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
                         <td key={"options"} className={tdclassName}>
-                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded" type="button" disabled={viewButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob})}}>
+                            <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded" type="button" disabled={viewButtonDisabled} onClick={(e) => {viewStudent(e,{'id':id,'name':name,'stud_class_name':stud_class_name,'dob':dob,'register_no':register_no})}}>
                                 View
                             </button>
 
@@ -348,8 +350,9 @@ function Students()
             <tr>
                 <th className={thclassName} scope='col'>SL_NO</th>
                 <th className={thclassName} scope='col'>Name</th>
+                <th className={thclassName} scope='col'>Register No</th>
+                <th className={thclassName} scope='col'>Date of Birth</th>
                 <th className={thclassName} scope='col'>Class</th>
-                <th className={thclassName} scope='col'>DOB</th>
                 <th className={thclassName} scope='col'>Options</th>
             </tr>
             </thead>

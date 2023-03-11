@@ -206,6 +206,33 @@ function Attendance(){
     }
 
 
+    const printAttendances = () => {
+        let form_data = new FormData();
+        let attendances_to_sent = [...attendances];
+        let k=1;
+        for(let i=0;i<attendances_to_sent.length;i++)
+        {
+            attendances_to_sent[i].sl_no = k++;
+            console.log(attendances_to_sent[i].sl_no)
+        }
+        form_data.append('attendances_to_print',JSON.stringify(attendances_to_sent));
+        axiosInstance
+        .post('attendance/print/',form_data)
+        .then(res=>{
+            const linkSource = ("data:application/pdf;base64,"+res.data).replace(/['"]+/g, '');
+            const downloadLink = document.createElement("a");
+            const fileName = "attendance.pdf";
+        
+            downloadLink.href = linkSource;
+            downloadLink.download = fileName;
+            downloadLink.click();
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+
+
     const [tableclassName,settableClassName] = useState("min-w-full min-w-full divide-y divide-gray-200 table-auto dark:divide-gray-700 ")
 
     const thclassName = "py-2 px-4 text-sm font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-200";
@@ -252,6 +279,7 @@ function Attendance(){
 
 
         </select>
+        <button className='bg-blue-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded m-1' onClick={printAttendances}>Print</button> 
         <label htmlFor="sort_options" className="text-white text-sm font-bold float-right mt-2">Sort By:</label>
         <button className='bg-red-600 hover:bg-red-400 text-white font-bold py-1 px-3 rounded m-1 float-right' onClick={clearFilters}>Clear Filters</button> 
         <button className='bg-blue-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded m-1 float-right' onClick={getFilterComponent}>Filter</button> 

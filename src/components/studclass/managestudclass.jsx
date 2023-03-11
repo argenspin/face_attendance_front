@@ -119,6 +119,7 @@ function ManageClass(props){
             )
             }
         </select>
+        <br/>
         <label className="text-white text-sm font-bold mb-2 m-2">Is Lab:</label>
         <input  type="checkbox" checked={newData['is_lab']} className=" border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
                         (e)=>{setNewData(prevState => ({

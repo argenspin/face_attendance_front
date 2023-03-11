@@ -115,7 +115,7 @@ function FilterAttendance(props){
 
 
     return(
-        <div className='fixed z-40 max-w-full w-2/4 max-h-full h-2/5 m-2 rounded bg-stone-900'>
+        <div className='fixed z-40 max-w-full w-2/4 max-h-full h-2/4 m-2 rounded bg-stone-900'>
             <h2 className='rounded text-teal-500 text-3xl font-bold m-3 bg-opacity-95'>Filter Attendance</h2>
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Student Name:</label>

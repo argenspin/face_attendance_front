@@ -35,7 +35,7 @@ axiosInstance.interceptors.request.use(
     const [foundIds,setFoundIds] = useState({}) //Object of all matching names and their counts as key value pair
     const [matchComplete,setMatchComplete] = useState(false) //Show status of matching
     const [frequentlyMatchedId,setFrequentlyMatchedId] = useState('') //To store the name with is repeated most in foundnames
-    const [camType,setCamType] = useState('user')
+    const [camType,setCamType] = useState('environment')
 
     const [status,setStatus] = useState('Idle')
     const [matchedName,setMatchedName] = useState('NULL')
@@ -215,7 +215,7 @@ axiosInstance.interceptors.request.use(
           {
             getCurrentSubject();
           }
-        }, 1500);
+        }, 1000);
     
        return () => clearTimeout(timeout);
       },[count]);

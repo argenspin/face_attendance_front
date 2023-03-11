@@ -133,7 +133,7 @@ function CreateSubject(props){
         <div className='fixed z-40 max-w-full w-2/4 max-h-full h-2/4 m-2 bg-stone-900 rounded'>
             <h2 className='rounded text-teal-500 text-3xl font-bold m-2'>Create Subject</h2>
             <br/>
-            <label className="text-white text-sm font-bold mb-2 m-2">Subject Name:</label>
+            <label className="text-white text-sm font-bold mb-2 m-2">Name:</label>
             <input  type="text" id='subjectname' className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
                     (e)=>{setNewData(prevState => ({
                         ...prevState, ['name']:e.target.value

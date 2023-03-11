@@ -76,7 +76,7 @@ function TeacherLogin(props){
             <br/>
             <form>
             <label className="text-white text-sm font-bold mb-2 m-2">Username: </label>
-            <input  type="text" className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight "
+            <input  type="text" id="username" className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight "
               onChange={(e)=>{setUsername(e.target.value)}}  />
             <label className="text-white text-sm font-bold mb-2 m-2">Password: </label>
             <input  type="password" className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight "
