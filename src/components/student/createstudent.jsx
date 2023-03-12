@@ -8,6 +8,7 @@ function CreateStudent(props){
 
     const [newData,setNewData] = useState({'name':'','stud_class_name':'','face_photo_b64':'', 'multiple_images':[],'register_no':'','dob':''});
     const [studClasses,setStudClasses] = useState([])
+    const [batches,setBatches] = useState([])
     const [faceCaptureComponent,setFaceCaptureComponent] = useState([])
     const [viewMode,setViewMode] = useState('')
     const [saveButtonDisabled,setSaveButtonDisabled] = useState(false)
@@ -28,6 +29,17 @@ function CreateStudent(props){
         })
     }
 
+    const getAllBatches = async() => {
+        await axiosInstance
+        .get('academicbatch/retrieve/')
+        .then(res=>{
+            setBatches(res.data)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+
     const createStudentSave = (e) => {
         e.preventDefault();
         console.log(newData)
@@ -35,6 +47,7 @@ function CreateStudent(props){
         let form_data = new FormData();
         form_data.append('name',newData['name']);
         form_data.append('stud_class_name',newData['stud_class_name']);
+        form_data.append('batch',newData['batch'])
         form_data.append('register_no',newData['register_no']);
         form_data.append('dob',newData['dob']);
         form_data.append('face_photo_b64',newData['face_photo_b64'])
@@ -125,6 +138,7 @@ function CreateStudent(props){
 
     useLayoutEffect(() => {
         getAllStudClasses();
+        getAllBatches();
     },[])
 
     useEffect(()=> {
@@ -172,6 +186,22 @@ function CreateStudent(props){
                 }
             </select>
             <br/>
+            <label className="text-white text-sm font-bold mb-2 m-2">Batch:</label>
+            <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={''} onChange={(e)=>{setNewData(prevState => ({
+                    ...prevState, ['batch']:e.target.value
+            })
+            )
+            }} >
+                <option value={''} key={''}></option>
+                {
+                    batches.map( ({id,batch_name}) => {
+                        return (
+                            <option value={id} key={id}>{batch_name}</option>
+                        )
+                    }
+                )
+                }
+            </select>
             <label className="text-white text-sm font-bold mb-3 m-2">Date of Birth:</label>
             <input  type="date" id='student_dob' className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
                 (e)=>{setNewData(prevState => ({

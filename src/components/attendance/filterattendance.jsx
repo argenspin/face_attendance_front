@@ -10,6 +10,7 @@ function FilterAttendance(props){
         }
 
     const [studClasses,setStudClasses] = useState([])
+    const [batches,setBatches] = useState([])
     const [filterOptions,setFilterOptions] = useState(props.current_filter_options)
     const [days,setDays] = useState([])
     const [dateSelectionComponent,setDateSelectionComponent] = useState([])
@@ -29,6 +30,18 @@ function FilterAttendance(props){
                 console.log(data[i].sl_no)
             }
             setStudClasses(data)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+
+
+    const getAllBatches = async() => {
+        await axiosInstance
+        .get('academicbatch/retrieve/')
+        .then(res=>{
+            setBatches(res.data)
         })
         .catch(err=>{
             console.log(err)
@@ -111,6 +124,7 @@ function FilterAttendance(props){
 
     useEffect(()=>{
         getAllStudClasses();
+        getAllBatches();
     },[])
 
 
@@ -127,6 +141,15 @@ function FilterAttendance(props){
                     }} 
                 />
             <br/>
+            <label className="text-white text-sm font-bold mb-2 m-2">Register No:</label>
+            <input  type="text" className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
+                        (e)=>{setFilterOptions(prevState => ({
+                            ...prevState, ['register_no']:e.target.value
+                    })
+                    )
+                    }} 
+                />
+            <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Class:</label>
             <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={''} onChange={(e)=>{setFilterOptions(prevState => ({
                     ...prevState, ['stud_class_name']:e.target.value
@@ -138,6 +161,23 @@ function FilterAttendance(props){
                     studClasses.map( ({stud_class_name}) => {
                         return (
                             <option value={stud_class_name} key={stud_class_name}>{stud_class_name}</option>
+                        )
+                    }
+                )
+                }
+            </select>
+            <br/>
+            <label className="text-white text-sm font-bold mb-2 m-2">Batch Name:</label>
+            <select id='student_batch' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={''} onChange={(e)=>{setFilterOptions(prevState => ({
+                    ...prevState, batch_name:e.target.value
+            })
+            )
+            }} >
+                <option value={''} key={''}></option>
+                {
+                    batches.map( ({batch,batch_name}) => {
+                        return (
+                            <option value={batch_name} key={batch}>{batch_name}</option>
                         )
                     }
                 )

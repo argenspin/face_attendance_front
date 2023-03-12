@@ -46,11 +46,11 @@ function TimeTable(props){
             <>
             {Object.keys(timetable).map((day,i)=>{
                     return(
-                        <tr className="w-32">
+                        <tr className="">
                             <td className="font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-200">{day}</td>
                             {timetable[day].map((subject_name)=>{
                                 return(
-                                <td className="font-normal text-xs text-gray-900 whitespace-nowrap dark:text-white">{subject_name}</td>
+                                <td className="font-normal text-sm text-gray-900 dark:text-white">{subject_name}</td>
                                 )
                             }
                             
@@ -193,7 +193,7 @@ function TimeTable(props){
     return(
         <div className="text-white float-right"  style={{ minWidth: '250px', maxWidth: '250px', marginRight: '480px' }}>
             <button className='bg-blue-600 text-white py-1 px-3 shadow appearance-none border rounded mb-2' type="button" onClick={getEditTableComponent} disabled={editButtonDisabled}>Edit</button> 
-            <table className="table text-white table-auto border-separate border-spacing-2 border border-neutral-50">
+            <table className="table text-white table-fixed border-separate border-spacing-2 border border-neutral-50" style={{'width':'700px'}}>
                 {/* <tr className="">
                     <th>
                         Day

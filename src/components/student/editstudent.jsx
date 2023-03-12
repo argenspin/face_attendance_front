@@ -6,55 +6,12 @@ function EditStudent(props){
 
     axiosInstance.defaults.timeout = 15000
 
-    const [newData,setNewData] = useState({'id':props.data['id'], 'name':props.data['name'],'stud_class_name':props.data['stud_class_name'],'face_photo_b64':props.data['face_photo_b64'], 'multiple_images':[],'register_no':props.data['register_no'],'dob':props.data['dob']});
+    const [newData,setNewData] = useState({'id':props.data['id'], 'name':props.data['name'],'stud_class_name':props.data['stud_class_name'],'face_photo_b64':props.data['face_photo_b64'], 'multiple_images':[],'register_no':props.data['register_no'],'dob':props.data['dob'],'batch':props.data['batch'],'batch_name':props.data['batch_name']});
     const [studClasses,setStudClasses] = useState([])
+    const [batches,setBatches] = useState([])
     const [faceCaptureComponent,setFaceCaptureComponent] = useState(null)
     const [viewMode,setViewMode] = useState('view')
     const [saveButtonDisabled,setSaveButtonDisabled] = useState(false);
-
-    // const getVIewOrEditMode = () => {
-    //     if(userType ==='admin')
-    //     {
-    //         setNameComponent( <input  type="text" id='student_name' className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={newData['name']} onChange={
-    //             (e)=>{setNewData(prevState => ({
-    //                 ...prevState, ['name']:e.target.value
-    //         })
-    //         )
-    //         }} 
-    //         />)
-
-    //         setStudClassComponent(
-            
-    //         <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={newData['stud_class_name']} onChange={(e)=>{setNewData(prevState => ({
-    //             ...prevState, ['stud_class_name']:e.target.value
-    //     })
-    //     )
-    //     }} >
-    //         <option value={newData['stud_class_name']} key={newData['stud_class_name']}>{newData['stud_class_name']}</option>
-    //         {
-    //             studClasses.map( ({stud_class_name}) => {
-    //                 //This is done to prevent duplication studclassnames
-    //                 if(stud_class_name!==newData['stud_class_name'])
-    //                 {
-    //                 return (
-    //                     <option value={stud_class_name} key={stud_class_name}>{stud_class_name}</option>
-    //                 )
-    //                 }
-    //             }
-    //         )
-    //         }
-    //     </select>
-    //     )
-    //     }
-    //     else{
-    //         setNameComponent(
-    //             <label className=" shadow appearance-none rounded py-1 px-1 text-white ">{newData['name']}</label>
-    //         )
-    //         setStudClassComponent(
-    //             <label className=" shadow appearance-none rounded py-1 px-1 text-white ">{newData['stud_class_name']}</label>
-    //         )
-    //     }
-    // }
 
 
 
@@ -73,6 +30,17 @@ function EditStudent(props){
         })
     }
 
+    const getAllBatches = async() => {
+        await axiosInstance
+        .get('academicbatch/retrieve/')
+        .then(res=>{
+            setBatches(res.data)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+
     const editStudentSave = (e) => {
         e.preventDefault();
         console.log(newData)
@@ -80,6 +48,7 @@ function EditStudent(props){
         form_data.append('id',newData['id']);
         form_data.append('name',newData['name']);
         form_data.append('stud_class_name',newData['stud_class_name']);
+        form_data.append('batch',newData['batch'])
         form_data.append('face_photo_b64',newData['face_photo_b64'])
         form_data.append('register_no',newData['register_no'])
         form_data.append('dob',newData['dob'])
@@ -156,6 +125,7 @@ function EditStudent(props){
 
     useLayoutEffect(() => {
         getAllStudClasses();
+        getAllBatches();
     },[])
 
     useEffect(()=>{
@@ -210,6 +180,26 @@ function EditStudent(props){
             }
         </select>
         <br/>
+        <label className="text-white text-sm font-bold mb-3 m-2 whitespace-nowrap">Batch:</label>
+            <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight ml-3" defaultValue={newData['batch']} onChange={(e)=>{setNewData(prevState => ({
+                    ...prevState, ['batch']:e.target.value
+            })
+            )
+            }} >
+                <option value={newData['batch']} key={newData['batch']}>{newData['batch_name']}</option>
+                {
+                    batches.map( ({id,batch_name}) => {
+                        if(id!==newData['batch'])
+                        {
+                            return (
+                                <option value={id} key={id}>{batch_name}</option>
+                            )
+                        }
+                    }
+                )
+                }
+            </select>
+            <br/>
         <label className="text-white text-sm font-bold mb-3 m-2 whitespace-nowrap">Date of Birth:</label>
             <input  type="date" id='student_dob' defaultValue={newData['dob']} className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight ml-3" onChange={
                 (e)=>{setNewData(prevState => ({

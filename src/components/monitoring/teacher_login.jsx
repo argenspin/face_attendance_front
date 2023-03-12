@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { axiosInstance } from "../axiosinstance";
 
@@ -38,6 +39,19 @@ function TeacherLogin(props){
         }
     }
 
+    const createAttendanceObjectsOnLogin = async(stud_class_name,access_token) => {
+      let form_data = new FormData()
+      form_data.append('stud_class_name',stud_class_name);
+      await axios
+      .post('api/attendance/onteacherlogin/create/',form_data,{headers:{'Authorization': `JWT ${access_token}`,"Content-Type": "multipart/form-data"}})
+      .then(res=>{
+      console.log(res.data)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
+
     const getStudClassName = async() => {
         axiosInstance
             .get('usertypestudclass/retrieve/')
@@ -55,6 +69,8 @@ function TeacherLogin(props){
                 }
                 else if(res.data['user_type']==='teacher')
                 {
+                  let access_token = localStorage.getItem('access')
+                  createAttendanceObjectsOnLogin(res.data['stud_class_name'],access_token)
                   props.onlogin(res.data['stud_class_name']);
                   localStorage.removeItem('refresh');
                   localStorage.removeItem('access');
