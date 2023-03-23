@@ -21,8 +21,22 @@ function SelectStudClass(props){
         })
     }
 
+    const createAttendanceObjectsOnLogin = async(stud_class_name) => {
+        let form_data = new FormData()
+        form_data.append('stud_class_name',stud_class_name);
+        await axios
+        .post('api/attendance/onteacherlogin/create/',form_data,{headers:{'Authorization': `JWT ${props.access}`,"Content-Type": "multipart/form-data"}})
+        .then(res=>{
+        console.log(res.data)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    }
+
     const selectClass = (e)=> {
         e.preventDefault()
+        createAttendanceObjectsOnLogin(studClassName)
         props.onselect(studClassName);
     }
 

@@ -3,7 +3,7 @@ import '../css/sidebar.css';
 import { Link,NavLink } from "react-router-dom";
 import { Nav,Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' 
-import { faHome,faUser,faSchool, faBook, faBookBible, faBookAtlas } from "@fortawesome/free-solid-svg-icons";
+import { faHome,faUser,faSchool, faBook, faBookBible, faBookAtlas, faPerson, faPersonChalkboard, faRestroom, faHomeUser, faBookReader } from "@fortawesome/free-solid-svg-icons";
 import {logOutUser} from './home'
 import { axiosInstance } from "./axiosinstance";
 
@@ -40,7 +40,7 @@ function Sidebar(){
             setTeacherLink(
 
                 <NavLink className={ClassNameForLink} to='teachers'>
-                <FontAwesomeIcon className={faClassName} icon={faUser}  size='xl' />
+                <FontAwesomeIcon className={faClassName} icon={faPersonChalkboard}  size='xl' />
                 <span className={SpanClassName}>Teachers</span>
                 </NavLink>
             )
@@ -58,7 +58,7 @@ function Sidebar(){
             setClassesLink(
 
                 <NavLink className={ClassNameForLink} to='classes'>
-                <FontAwesomeIcon className={faClassName} icon={faUser}  size='xl' />
+                <FontAwesomeIcon className={faClassName} icon={faHomeUser}  size='xl' />
                 <span className={SpanClassName}>Classes</span>
                 </NavLink>
             )
@@ -121,7 +121,7 @@ function Sidebar(){
                 {classesLink}
                 {subjectsLink}
                 <NavLink  className={ClassNameForLink} to='attendance'>
-                <FontAwesomeIcon className={faClassName} icon={faBook}  size='xl' />
+                <FontAwesomeIcon className={faClassName} icon={faBookReader}  size='xl' />
                 <span className={SpanClassName}>Attendance</span>
                 </NavLink>
 

@@ -1,13 +1,14 @@
 import { useLayoutEffect } from "react";
 import {React,useState,useEffect} from "react";
 import { axiosInstance } from "../axiosinstance";
+import CreateBatch from "./createbatch";
 import CreateClass from "./createstudclass";
 import ManageClass from "./managestudclass";
 import TimeTable from "./timetable";
 
 function StudClass(){
 
-    const [studClasses,setStudClasses] = useState([{id:'',sl_no:'',name:'',stud_class_name:'',subject:'',username:'',teacher:'',teacher_name:'',is_lab:false}])
+    const [studClasses,setStudClasses] = useState([{id:'',sl_no:'',name:'',stud_class_name:'',subject:'',username:'',teacher:'',teacher_name:'',is_lab:false,current_batch:'',batch_name:''}])
     const [createButtonDisabled,setCreateButtonDisabled] = useState(false)
     const [manageButtonDisabled,setManageButtonDisabled] = useState(false)
     const [componentCreateManage,setComponentCreateManage] = useState([])
@@ -42,7 +43,7 @@ function StudClass(){
 
 
     const manageStudClass = (e,stud_class_data) => {
-
+        setCreateButtonDisabled(true)
         setComponentCreateManage(
             <ManageClass data={stud_class_data} ondone={effectsAfterCreateManageComponentDisabled}/>
         )
@@ -57,7 +58,12 @@ function StudClass(){
         setComponentCreateManage(
            <CreateClass ondone = {effectsAfterCreateManageComponentDisabled}/> 
         )
-        console.log("hello")
+    }
+
+    const createBatch = () => {
+        setComponentCreateManage(
+           <CreateBatch ondone = {effectsAfterCreateManageComponentDisabled}/> 
+        )
     }
 
     
@@ -79,7 +85,9 @@ function StudClass(){
     return(
         <div>
         <br/>
-        <button className='bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded m-1' disabled={createButtonDisabled} onClick={createStudClass}>Create</button> 
+        <button className='bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded m-1' disabled={createButtonDisabled} onClick={createStudClass}>Create Class</button> 
+        <button className='bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded m-1' disabled={createButtonDisabled} onClick={createBatch}>Create Batch</button> 
+
             <div className="m-2 flex flex-col">
                 <div className="overflow-x-auto shadow-md sm:rounded-lg">
                     <div className=" min-w-fit align-middle">
@@ -92,21 +100,23 @@ function StudClass(){
                         <th className={thclassName} scope='col'>Class</th>
                         <th className={thclassName} scope='col'>Lab</th>
                         <th className={thclassName} scope='col'>Teacher</th>
+                        <th className={thclassName} scope='col'>Current Batch</th>
                         <th className={thclassName} scope='col'>Options</th>
 
                     </tr>
                     </thead>
                     <tbody className={tbodyclassName}>
                         {/* here teacher is the id of the teacher */}
-                        {studClasses.map( ( {id,sl_no,stud_class_name,teacher,teacher_name,is_lab}) => {
+                        {studClasses.map( ( {id,sl_no,stud_class_name,teacher,teacher_name,is_lab,current_batch,batch_name}) => {
                             return <tr key={id} className={tdtrclassName}>
                                     <td key={sl_no} className={tdclassName}>{sl_no}</td>
                                     <td key={stud_class_name} className={tdclassName}>{stud_class_name}</td>
-                                    <td key={is_lab} className={tdclassName}>{is_lab?'Yes':'No'}</td>
+                                    <td key={`$(is_lab) $(is_lab)`} className={tdclassName}>{is_lab?'Yes':'No'}</td>
                                     {/* <td key={teacher} className={tdclassName}>{teacher}</td> */}
                                     <td key={teacher_name} className={tdclassName}>{teacher_name}</td>
+                                    <td key={`$(id) $(current_batch) `} className={tdclassName}>{batch_name}</td>
                                     <td key={"options"} className={tdclassName}>
-                                        <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" disabled={manageButtonDisabled} onClick={(e)=>manageStudClass(e,{'stud_class_name':stud_class_name,'teacher':teacher,'teacher_name':teacher_name,'is_lab':is_lab})} type="button">
+                                        <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" disabled={manageButtonDisabled} onClick={(e)=>manageStudClass(e,{'stud_class_name':stud_class_name,'teacher':teacher,'teacher_name':teacher_name,'is_lab':is_lab,'current_batch':current_batch,'batch_name':batch_name})} type="button">
                                             Manage
                                         </button>
 

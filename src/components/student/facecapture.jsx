@@ -128,7 +128,7 @@ const FaceCapture = (props) => {
         {
             setImageSrc(multipleFacePhotoB64[0])
         }
-        if(noOfCapturedImages==8)
+        if(noOfCapturedImages==12)
         {
             setFacePreviewComponent(
                 <>
@@ -162,7 +162,7 @@ const FaceCapture = (props) => {
                 <div className=' flex flex-wrap justify-center'>
                 <div className="m-1 px-5">
                     <label className="h6 text-white inline">Captured Images:</label>
-                    <label className="h6 text-blue-500 inline ">{noOfCapturedImages+'/8'}</label>
+                    <label className="h6 text-blue-500 inline ">{noOfCapturedImages+'/12'}</label>
                 </div>
                 <Webcam
                 forceScreenshotSourceSize

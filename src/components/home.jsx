@@ -20,6 +20,7 @@ import { axiosInstance } from './axiosinstance';
 import StudClass from './studclass/studclasses';
 import Subjects from './subjects/subjects';
 import Attendance from './attendance/attendances';
+import UnAuthorized from './unauthorized_page';
 
 function Home(props) {
 
@@ -32,6 +33,8 @@ function Home(props) {
     const navigate = useNavigate(); //Navigation object to navigate to different address
     //const [refreshToken, setRefreshToken] = useState('')
     const [accessValid,setAccessValid] = useState(true);
+
+    const [adminOnlyRoutes,setAdminOnlyRoutes] = useState([])
 
     axiosInstance.defaults.headers.post['Content-Type'] = 'application/json'
 
@@ -88,6 +91,24 @@ function Home(props) {
         .then(res => {
             setUserType(res.data['user_type']);
             setStudClassName(res.data['stud_class_name']);
+            if(res.data['user_type']==='admin')
+            {
+                setAdminOnlyRoutes(
+                    <>
+                    <Route path='/teachers' element={<Teacher/>} />
+                    <Route path='/classes' element={<StudClass/>} />
+                    <Route path='/subjects' element={<Subjects/>} />
+                    </>
+                )
+            }
+            else{
+                setAdminOnlyRoutes(
+                    <>
+                    <Route path='/teachers' element={<UnAuthorized/>} />
+                    <Route path='/classes' element={<UnAuthorized/>} />
+                    <Route path='/subjects' element={<UnAuthorized/>} />
+                    </>
+                )            }
         })
         .catch(err => {
             console.log(err);
@@ -162,9 +183,7 @@ function Home(props) {
                         <Routes>
                             <Route path='/dashboard' element={<Dashboard/>} />
                             <Route path='/students' element={<Students />} />
-                            <Route path='/teachers' element={<Teacher/>} />
-                            <Route path='/classes' element={<StudClass/>} />
-                            <Route path='/subjects' element={<Subjects/>} />
+                            {adminOnlyRoutes}
                             <Route path='/attendance' element={<Attendance/>} />
                         </Routes>
                     

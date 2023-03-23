@@ -44,7 +44,7 @@ axiosInstance.interceptors.request.use(
     const [faceCaptureComponent,setFaceCaptureComponent] = useState(undefined)
     const [teacherLoginComponent, setTeacherLoginComponent] = useState([])
     const [adminChangeClassComponent,setAdminChangeClassComponent] = useState([])
-    const [verifyButtonDisabled,setVerifyButtonDisabled] = useState(false);
+    const [verifyButtonDisabled,setVerifyButtonDisabled] = useState(true);
     const [currentsubject,setCurrentSubject] = useState({'id':null,'subject_name':'Nothing','timetable_subject_index':null})
     //Function to capture images and send to server
     const capture = async() => {
@@ -55,7 +55,7 @@ axiosInstance.interceptors.request.use(
         let form_data = new FormData() //FormData object to send to server
         let images_to_detect = []
         form_data.append('stud_class_name',studClassName)
-        while(i<8) //Take n photos
+        while(i<3) //Take n photos
          {
           //let imageSrc = webcamRef.current.getScreenshot(); //Take a picture from webcam
           images_to_detect.push(webcamRef.current.getScreenshot())
@@ -140,16 +140,6 @@ axiosInstance.interceptors.request.use(
         }
       }
 
-      const getStatus = () => {
-        if(matchedName==='None')
-        {
-          setStatus("Verfication Failed!")
-        }
-        else if(matchedName==='NULL')
-        {
-          setStatus("Idle");
-        }
-      }
 
       const getCurrentSubject = () => {
         let form_data = new FormData();
@@ -158,6 +148,14 @@ axiosInstance.interceptors.request.use(
         .post('attendance/currentsubject/',form_data)
         .then(res=>{
           setCurrentSubject(res.data);
+          if (res.data['subject_name']==='Nothing')
+          {
+            setVerifyButtonDisabled(true);
+          }
+          else
+          {
+            setVerifyButtonDisabled(false)
+          }
         })
         .catch(err=>{
           console.log(err)

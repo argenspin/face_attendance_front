@@ -48,11 +48,13 @@ function EditStudent(props){
         form_data.append('id',newData['id']);
         form_data.append('name',newData['name']);
         form_data.append('stud_class_name',newData['stud_class_name']);
-        form_data.append('batch',newData['batch'])
         form_data.append('face_photo_b64',newData['face_photo_b64'])
         form_data.append('register_no',newData['register_no'])
         form_data.append('dob',newData['dob'])
+        form_data.append('batch',newData['batch'])
         form_data.append('multiple_images',JSON.stringify(newData['multiple_images']))
+        props.start_loading_animation();
+        setSaveButtonDisabled(true)
         axiosInstance
         .post('student/edit/',form_data)
         .then(res=>{
@@ -61,6 +63,8 @@ function EditStudent(props){
 
         })
         .catch(err => {
+            props.stop_loading_animation();
+            setSaveButtonDisabled(false)
             if(err.response.status==406)
             {
                 alert("A Face cannot be detected from the submitted image!!")
@@ -137,7 +141,7 @@ function EditStudent(props){
 
 
         return(
-            <div className='fixed z-40 max-w-full w-3/4 max-h-full h-2/3 m-2 bg-stone-900 rounded'>
+            <div className='fixed z-40 max-w-full w-3/4 max-h-full h-4/5 m-2 bg-stone-900 rounded'>
             <h2 className='rounded text-teal-500 text-3xl font-bold m-2'>Edit Student</h2>
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Name:</label>

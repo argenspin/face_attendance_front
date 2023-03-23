@@ -6,7 +6,7 @@ function CreateStudent(props){
 
     axiosInstance.defaults.timeout = 15000
 
-    const [newData,setNewData] = useState({'name':'','stud_class_name':'','face_photo_b64':'', 'multiple_images':[],'register_no':'','dob':''});
+    const [newData,setNewData] = useState({'name':'','stud_class_name':'','face_photo_b64':'', 'multiple_images':[],'register_no':'','dob':'','batch':''});
     const [studClasses,setStudClasses] = useState([])
     const [batches,setBatches] = useState([])
     const [faceCaptureComponent,setFaceCaptureComponent] = useState([])
@@ -52,6 +52,7 @@ function CreateStudent(props){
         form_data.append('dob',newData['dob']);
         form_data.append('face_photo_b64',newData['face_photo_b64'])
         form_data.append('multiple_images',JSON.stringify(newData['multiple_images']))
+        props.start_loading_animation();
         axiosInstance
         .post('student/create/',form_data)
         .then(res=>{
@@ -59,6 +60,7 @@ function CreateStudent(props){
 
         })
         .catch(err => {
+            props.stop_loading_animation();
             if(err.response.status==406)
             {
                 alert("A Face cannot be detected from the submitted image!!")
@@ -148,7 +150,7 @@ function CreateStudent(props){
     },[viewMode])
 
         return(
-            <div className='fixed z-40 max-w-full w-3/4 max-h-full h-2/3 m-2 bg-stone-900 rounded'>
+            <div className='fixed z-40 max-w-full w-3/4 max-h-full h-4/5 m-2 bg-stone-900 rounded'>
             <h2 className='rounded text-teal-500 text-3xl font-bold m-2'>Create Student</h2>
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Name:</label>
@@ -202,6 +204,7 @@ function CreateStudent(props){
                 )
                 }
             </select>
+            <br/>
             <label className="text-white text-sm font-bold mb-3 m-2">Date of Birth:</label>
             <input  type="date" id='student_dob' className=" shadow appearance-none border rounded py-1 px-1 text-gray-700 leading-tight " onChange={
                 (e)=>{setNewData(prevState => ({

@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { axiosInstance } from "../axiosinstance";
+import EditAttendance from "./editattendance";
 import FilterAttendance from "./filterattendance";
 
 function Attendance(){
@@ -8,7 +9,7 @@ function Attendance(){
     const [attendanceTableComponent,setAttendanceTableComponent] = useState([])
     const [filterComponent,setFilterComponent] = useState([])
     const [filterOptions,setFilterOptions] = useState({'student_name':'','stud_class_name':'','date':false,'year':-1,'month':-1,'day':-1,'batch_name':'','register_no':''})
-    
+    const [editComponent,setEditComponent] = useState([])
     const [userType,setUserType] = useState('')
     const [studClassName,setStudClassName] = useState('')
 
@@ -76,10 +77,24 @@ function Attendance(){
         })
     }
 
+    const getEditComponent = (current_data) =>{
+        setEditComponent(
+            <EditAttendance data={current_data} ondone={effectsAfterEditComponentDisabled}/>
+        )
+    }
+
+    const effectsAfterEditComponentDisabled = (save_or_cancel) => {
+        if(save_or_cancel=='save')
+        {
+            getAllAttendances();
+        }
+        setEditComponent([])
+    }
+
     const getAttendanceTableComponent = (attendace_data) => {
         setAttendanceTableComponent(
             <>
-        {attendace_data.map( ( {id,sl_no,stud_class_name,student_name,date,subject1_att,subject2_att,subject3_att,subject4_att,subject5_att,batch,batch_name}) => {
+        {attendace_data.map( ( {id,sl_no,stud_class_name,student,student_name,register_no, date,subject1_att,subject2_att,subject3_att,subject4_att,subject5_att,batch,batch_name}) => {
             return <tr key={id} className={tdtrclassName}>
                     <td key={`$(sl_no) $(id)`} className={tdclassName}>{sl_no}</td>
                     <td key={`$(date) $(id)`} className={tdclassName}>{date}</td>
@@ -93,7 +108,8 @@ function Attendance(){
                     <td key={id+' sub5'} className={tdclassName} style={{'color': (subject5_att? '#22c55e':'red')}}>{subject5_att ?'Present':'Absent'}</td>
 
                     <td key={"options"} className={tdclassName}>
-                        <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" type="button">
+                        <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded mr-1.5" type="button"
+                        onClick={()=>{getEditComponent({'id':id,'date':date,'stud_class_name':stud_class_name,'student_name':student_name,'register_no':register_no,'batch_name':batch_name,'batch':batch,'subject1_att':subject1_att,'subject2_att':subject2_att,'subject3_att':subject3_att,'subject4_att':subject4_att,'subject5_att':subject5_att})}} >
                             Edit
                         </button>
 
@@ -268,18 +284,6 @@ function Attendance(){
     useLayoutEffect(()=>{
         getUserTypeAndStudClassName();
     },[])
-    
-    // useEffect(()=>{
-    //     console.log(userType)
-    //     if(userType==='admin')
-    //     {
-    //         getAllAttendances();
-    //     }
-    //     else if(userType==='teacher')
-    //     {
-    //         getStudClassAttendances();
-    //     }
-    // },[])
 
     useEffect(()=>{
         getAttendanceTableComponent(attendances);
@@ -290,7 +294,7 @@ function Attendance(){
     return(
         <div>
         <br/>
-        <button className='bg-teal-600 hover:bg-teal-800 text-white font-bold py-1 px-3 rounded m-1'>Create</button> 
+        {editComponent} 
         <select name="sort_options" onChange={(e)=>{sortAttendance(e.target.value)}} className="border rounded py-1 px-1 text-white leading-tight float-right mr-52 bg-inherit mt-1" >
             <option className="text-black" value={'student_name_asc'} key={'student_name_asc'}>{'Name - Ascending'}</option>
             <option className="text-black" value={'student_name_desc'} key={'student_name_desc'}>{'Name - Descending'}</option>

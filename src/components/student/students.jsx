@@ -24,6 +24,8 @@ function Students()
 
     const [componentCreateEditView,setComponentCreateEditView] = useState([])
 
+    // const [allSelected,setAllSelected] = useState(undefined)
+
     const [filterComponent,setFilterComponent] = useState([])
     const [filterOptions,setFilterOptions] = useState({'student_name':'','stud_class_name':'','batch_name':'','register_no':''})
 
@@ -59,16 +61,21 @@ function Students()
     const effectsAfterCreateEditViewComponentDisabled = (save_or_cancel) => {
         if(save_or_cancel==='save')
         {
-            setLoadingState(true)
+            setLoadingState(false)
             getStudents();
-            setTimeout(()=>{
-                setLoadingState(false)
-            },1500)
         }
 
         enableAllButtons();
         setComponentCreateEditView([]);
         resetTableOpacity();
+    }
+
+    const startLoadingAnimation = () => {
+        setLoadingState(true);
+    }
+
+    const stopLoadingAnimation = () => {
+        setLoadingState(false);
     }
 
     const getUserTypeAndStudClassName = async() => {
@@ -115,7 +122,7 @@ function Students()
         disableAllButtons();
         settableClassName(tableclassName+"opacity-80");
         setComponentCreateEditView(
-            <CreateStudent show={true} ondone={effectsAfterCreateEditViewComponentDisabled} usertype = {userType}/>
+            <CreateStudent show={true} ondone={effectsAfterCreateEditViewComponentDisabled} usertype = {userType} start_loading_animation={startLoadingAnimation} stop_loading_animation={stopLoadingAnimation}/>
         )
     }
 
@@ -136,7 +143,7 @@ function Students()
         disableAllButtons();
         settableClassName(tableclassName+"opacity-80");
         setComponentCreateEditView(
-            <EditStudent ondone={effectsAfterCreateEditViewComponentDisabled} data={student_data} usertype = {userType}/>
+            <EditStudent ondone={effectsAfterCreateEditViewComponentDisabled} data={student_data} usertype = {userType} start_loading_animation={startLoadingAnimation} stop_loading_animation={stopLoadingAnimation}/>
         )
     }
 
@@ -189,7 +196,7 @@ function Students()
         if(userType==='admin')
         {
             setTBodyComponent(
-                students.map(function ( {id,sl_no,name,stud_class_name,register_no,dob,batch,batch_name}){
+                students.map(( {id,sl_no,name,stud_class_name,register_no,dob,batch,batch_name})=>{
                     return <tr key={id} className={tdtrclassName}>
                         <td key={sl_no} className={tdclassName}>
                              <input type="checkbox" className=" border rounded py-1 px-1 mr-2 text-red-700 leading-tight bg-red-600 " name="selection"
@@ -242,7 +249,7 @@ function Students()
         else
         {
             setTBodyComponent(
-                students.map(function ( {id,sl_no,name,stud_class_name,register_no,dob,batch,batch_name}){
+                students.map(( {id,sl_no,name,stud_class_name,register_no,dob,batch,batch_name})=>{
                     console.log(students.length)
                     return <tr key={id} className={tdtrclassName}>
                         <td key={sl_no} className={tdclassName}>{sl_no}</td>
@@ -425,9 +432,6 @@ function Students()
     }
     ,[createButtonDisabled,createComponent,students])
 
-    useState(()=>{
-
-    },[])
 
 
     return(
@@ -462,7 +466,9 @@ function Students()
         <table className={tableclassName}> 
             <thead className={theadclassName}>
             <tr>
-                <th className={thclassName} scope='col'><input type="checkbox" className=" border rounded py-1 px-1 mr-2 text-red-700 leading-tight bg-red-600 " name="selection"/>SL_NO</th>
+                <th className={thclassName} scope='col'>
+                    <input type="checkbox" className=" border rounded py-1 px-1 mr-2 text-red-700 leading-tight bg-red-600 " name="selection"/>
+                SL_NO</th>
                 <th className={thclassName} scope='col'>Name</th>
                 <th className={thclassName} scope='col'>Register No</th>
                 <th className={thclassName} scope='col'>Date of Birth</th>

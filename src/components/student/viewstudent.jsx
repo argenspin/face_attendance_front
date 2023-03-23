@@ -27,7 +27,7 @@ function ViewStudent(props){
 
     return(
         <div>
-            <div className='fixed z-40 max-w-full w-3/4 max-h-full h-2/3 m-2 bg-stone-900 rounded'>
+            <div className='fixed z-40 max-w-full w-3/4 max-h-full h-4/5 m-2 bg-stone-900 rounded'>
                 <h2 className='rounded text-teal-500 text-3xl font-bold m-2'>View Student</h2>
                 <br/>
                 <br/>
@@ -64,7 +64,7 @@ function ViewStudent(props){
                     }
                 </select>  
                 <button className='bg-blue-600 text-white py-1 px-3 m-2 shadow appearance-none border rounded' type="button" onClick={getAttendancePercentageForMonth}>Find</button>
-                <label className=" shadow appearance-none rounded py-1 pr-2 text-white ">{attendancePercentage}</label>
+                <label className=" shadow appearance-none rounded py-1 pr-2 text-white ">{attendancePercentage!=='Nil'? attendancePercentage+'%' : attendancePercentage}</label>
               
                 </div>
                 <div>
