@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { axiosInstance } from "../axiosinstance";
 
 function MultipleChangeClass(props){
     const [studClassName,setStudClassName] = useState('');
     const [studClasses,setStudClasses] = useState([]);
     const selected_ids = props.selected_ids;
+
+    axiosInstance.defaults.timeout = 30000
 
     const getAllStudClasses = async() => {
         let data = [];
@@ -13,30 +15,32 @@ function MultipleChangeClass(props){
         .then(res => {
             data = res.data;
             setStudClasses(data)
-
-            //console.log(data)
         })
         .catch(err => {
             console.log(err);
         })
     }
 
-    const transferMultipleStudentsToAnotherClass = () => {
+    const transferMultipleStudentsToAnotherClass = (e) => {
+        e.preventDefault();
+        props.start_loading_animation()
         let form_data = new FormData()
         form_data.append('stud_class_name',studClassName)
         form_data.append('student_ids',JSON.stringify(selected_ids))
         axiosInstance
         .post('students/update/studclasses/',form_data)
         .then(res=>{
+            props.stop_loading_animation()
             console.log(res)
             props.ondone();
         })
         .catch(err=>{
+            props.stop_loading_animation()
             console.log(err)
         })
     }
 
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         getAllStudClasses();
     },[])
 
@@ -46,7 +50,7 @@ function MultipleChangeClass(props){
             <br/>
             <form>
             <label className="text-white text-sm font-bold mb-2 m-2">Class: </label>
-            <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " onChange={(e)=>{setStudClassName(e.target.value)
+            <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={studClasses.length>0 ? studClasses[0].stud_class_name : ''} onChange={(e)=>{setStudClassName(e.target.value)
             }} >
                 {
                     studClasses.map( ({stud_class_name}) => {
@@ -60,7 +64,7 @@ function MultipleChangeClass(props){
             <br/>
             <br/>
             <div className="m-2">
-                <button className='bg-blue-600 text-white py-1 px-3 m-2 shadow appearance-none border rounded'type="submit" onClick={(e)=>{transferMultipleStudentsToAnotherClass()}}>Select</button> 
+                <button className='bg-blue-600 text-white py-1 px-3 m-2 shadow appearance-none border rounded'type="submit" onClick={(e)=>{transferMultipleStudentsToAnotherClass(e)}}>Select</button> 
                 <button className='bg-red-800 text-white py-1 px-3 shadow appearance-none border rounded'type="button" onClick={()=>{props.ondone()}}>Cancel</button> 
             </div>
             </form>

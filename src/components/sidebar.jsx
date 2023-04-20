@@ -4,7 +4,6 @@ import { Link,NavLink } from "react-router-dom";
 import { Nav,Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' 
 import { faHome,faUser,faSchool, faBook, faBookBible, faBookAtlas, faPerson, faPersonChalkboard, faRestroom, faHomeUser, faBookReader } from "@fortawesome/free-solid-svg-icons";
-import {logOutUser} from './home'
 import { axiosInstance } from "./axiosinstance";
 
 function Sidebar(){
@@ -104,27 +103,25 @@ function Sidebar(){
                 <NavLink className="d-flex align-items-center justify-content-center mb-10 " to='/home'>
                 <FontAwesomeIcon className="text-teal-500 hover:text-slate-700" icon={faHome}  size='3x' />
                 </NavLink>
-                {/* <br/>
-                <br/> */}
 
                 <NavLink to='dashboard' className={ClassNameForLink}>
                 <FontAwesomeIcon className={faClassName} icon={faBookAtlas}  size='xl' />
                 <span className={SpanClassName}>Dashboard</span>
                 </NavLink>
-                {/* <br/> */}
+
                 <NavLink className={ClassNameForLink} to='students'>
                 <FontAwesomeIcon className={faClassName} icon={faUser}  size='xl' />
                 <span className={SpanClassName}>Students</span>
                 </NavLink>
-                {/* <br/> */}
+
                 {teacherLink}
                 {classesLink}
                 {subjectsLink}
+
                 <NavLink  className={ClassNameForLink} to='attendance'>
                 <FontAwesomeIcon className={faClassName} icon={faBookReader}  size='xl' />
                 <span className={SpanClassName}>Attendance</span>
                 </NavLink>
-
             </Nav>
             
 

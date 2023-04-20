@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import 'bootstrap/dist/css/bootstrap.css'
 import {
     useNavigate,Navigate, 
     BrowserRouter as Router,
@@ -24,14 +23,7 @@ import UnAuthorized from './unauthorized_page';
 
 function Home(props) {
 
-
-
-    //axiosInstance.defaults.headers.get['Authorization']  = `JWT ${localStorage.getItem('access')}`;
-
-
-
     const navigate = useNavigate(); //Navigation object to navigate to different address
-    //const [refreshToken, setRefreshToken] = useState('')
     const [accessValid,setAccessValid] = useState(true);
 
     const [adminOnlyRoutes,setAdminOnlyRoutes] = useState([])
@@ -40,14 +32,12 @@ function Home(props) {
 
     axiosInstance.interceptors.request.use(
         request => {
-                //request.headers['Authorization'] = `JWT ${localStorage.getItem('access')}`;
             return request;
         },
         error => {
             return Promise.reject(error);
         }
     )
-
 
     const checkAccessValid = async() => {
         console.log("TOken refreshing")
@@ -129,7 +119,6 @@ function Home(props) {
             })
             localStorage.clear();
             console.log("logout function called");
-            //navigate('/login'); //Go to login page after logging out
         }
     }
 
@@ -150,8 +139,6 @@ function Home(props) {
                 getUserTypeAndStudClassName();
                 checkIfLoggedUserPresent();
                 console.log("useEFect working")
-
-                //requestWithToken();
                 checkAccessValid();
                 console.log(accessValid);
             },[]
@@ -171,7 +158,6 @@ function Home(props) {
         }
         else
         {
-        //requestWithToken();
             return(
                 <div className='flex h-full min-h-screen min-w-max max-h-fit bg-[#1c2226]'>
                         <Sidebar/>

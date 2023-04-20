@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import NavBar from "./NavBar";
 
 function About(){
-
     const [name,setName] = useState('fassdaf')
-
     const showName = () => {
         setName('Hello');
     }
-
     return(
         <div>
             <NavBar/>

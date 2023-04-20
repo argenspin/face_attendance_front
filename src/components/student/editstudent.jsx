@@ -13,8 +13,6 @@ function EditStudent(props){
     const [viewMode,setViewMode] = useState('view')
     const [saveButtonDisabled,setSaveButtonDisabled] = useState(false);
 
-
-
     const getAllStudClasses = async() => {
         let data = [];
         await axiosInstance
@@ -22,8 +20,6 @@ function EditStudent(props){
         .then(res => {
             data = res.data;
             setStudClasses(data)
-
-            //console.log(data)
         })
         .catch(err => {
             console.log(err);
@@ -74,18 +70,12 @@ function EditStudent(props){
 
     }
 
-
     const showUpdateFaceCaptureComponent = () => {
         console.log(viewMode)
         setSaveButtonDisabled(true)
         setViewMode('capture')
-        // setFaceCaptureComponent(
-        //     <FaceCapture func={hideFaceCaptureComponent}  viewmode={'capture'} usertype={userType} imageSrc={newData['face_photo_b64']} on_all_images_captured={onAllImagesCaptured}
-        //     />
-        // )
 
     }
-
     //Executed inside child component (FaceCapture)
     const hideFaceCaptureComponent = () => {
         setSaveButtonDisabled(false)
@@ -106,8 +96,6 @@ function EditStudent(props){
         })
         )
         setSaveButtonDisabled(false)
-
-
     }
 
     const getFaceCaptureComponent = () => {
@@ -133,10 +121,7 @@ function EditStudent(props){
     },[])
 
     useEffect(()=>{
-        //getVIewOrEditMode();
-        //showUpdateFaceCaptureComponent();
         getFaceCaptureComponent();
-        //showOrHideFaceCaptureComponent();
     },[studClasses,viewMode])
 
 
@@ -212,12 +197,9 @@ function EditStudent(props){
             )
             }} 
             />
-                    
-
 
             <br/>
             <label className="text-white text-sm font-bold mb-2 m-2">Face:</label>
-            {/*<button className='bg-blue-600 text-white py-1 px-3 m-2 shadow appearance-none border rounded' type="button" onClick={(e) => { showOrHideFaceCaptureComponent() } }>Show/Hide</button>*/} 
             <button className='bg-blue-600 text-white py-1 px-3 shadow appearance-none border rounded ml-3' type="button" onClick={(e) => { showUpdateFaceCaptureComponent() } }>Update Face</button> 
             <div>
                 {faceCaptureComponent}

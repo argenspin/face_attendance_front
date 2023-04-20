@@ -1,9 +1,6 @@
 import { useLayoutEffect } from "react";
 import {React,useState,useEffect} from "react";
-import axios from "axios";
-//import 'bootstrap/dist/css/bootstrap.css'
 import { axiosInstance } from "../axiosinstance";
-import FaceCapture from "./facecapture";
 import CreateStudent from "./createstudent";
 import EditStudent from "./editstudent";
 import ViewStudent from "./viewstudent";
@@ -13,29 +10,20 @@ import FilterStudents from "./filterstudents";
 
 function Students()
 {
+    
+    axiosInstance.defaults.timeout = 30000
     const [students,setStudents] = useState([])
-    const [studClasses,setStudClasses] = useState([])
-    const [studClassName, setStudClassName] = useState('');
     const [userType,setUserType] = useState('')
 
     const [selectedStudentIds,setSelectedStudentIds] = useState([])
-
-    const [facePhotoB64,setFacePhotoB64] = useState('')
-
     const [componentCreateEditView,setComponentCreateEditView] = useState([])
-
-    // const [allSelected,setAllSelected] = useState(undefined)
-
     const [filterComponent,setFilterComponent] = useState([])
     const [filterOptions,setFilterOptions] = useState({'student_name':'','stud_class_name':'','batch_name':'','register_no':''})
 
-    const [editComponent,setEditComponent] = useState([])
-    const [createComponent,setCreateComponent] = useState([])
     const [createButtonDisabled,setCreateButtonDisabled] = useState(false);
     const [editButtonDisabled,setEditButtonDisabled] = useState(false);
     const [deleteButtonDisabled,setDeleteButonDisabled] = useState(false)
     const [viewButtonDisabled,setViewButtonDisabled] = useState(false)
-
 
     const [transferStudentsButton,setTransferStudentsButton] = useState([])
 
@@ -83,7 +71,6 @@ function Students()
         .get('usertypestudclass/retrieve/')
         .then(res => {
             setUserType(res.data['user_type']);
-            setStudClassName(res.data['stud_class_name']);
         })
         .catch(err => {
             console.log(err);
@@ -92,7 +79,6 @@ function Students()
 
     //identifying which stud_class students to be retrieved are done in backend using access token
     const getStudents = () => {
-        //setStudents([])
         console.log(userType)
         axiosInstance
         .get('student/retrieve/')
@@ -105,7 +91,6 @@ function Students()
                 data[i].sl_no = k++;
                 console.log(data[i].sl_no)
             }
-            // setStudents(sortedObj)
             setStudents(data)
         })
         .catch(err => {
@@ -134,7 +119,6 @@ function Students()
         .post('student/retrieve/',form_data)
         .then(res=>{
             student_data['face_photo_b64'] = res.data['face_photo_b64'];
-            //setFacePhotoB64(face_photo_b64)
         })
         .catch(err=>{
             student_data['face_photo_b64'] = ''
@@ -159,7 +143,6 @@ function Students()
         .then(res=>{
             face_photo_b64 = res.data['face_photo_b64']
             student_data['face_photo_b64'] = face_photo_b64
-            setFacePhotoB64(face_photo_b64)
         })
         .catch(err=>{
             console.log(err);
@@ -168,7 +151,6 @@ function Students()
         setCreateButtonDisabled(true);
         settableClassName(tableclassName+"opacity-80");
         setComponentCreateEditView(
-            /*<EditStudent func={effectsAfterEditComponentDisabled} data={student_data} usertype = {userType}/>*/
             <ViewStudent data={student_data} ondone = {effectsAfterCreateEditViewComponentDisabled}/>
         )
 
@@ -214,9 +196,6 @@ function Students()
                                         selected_student_ids = selected_student_ids.filter(student_id=> student_id!=id)
                                         console.log(selected_student_ids)   
                                         getTransferButton(selected_student_ids);
-
-                                        // setSelectedStudentIds(test.splice(index))
-                                        // console.log(test)
                                         setSelectedStudentIds(selected_student_ids.filter(student_id => student_id !== id))
                                     }
                                 }}
@@ -295,7 +274,7 @@ function Students()
         {
             setTransferStudentsButton(
                 <button className="bg-yellow-600 hover:bg-yellow-300-800 text-white font-bold py-1 px-3 rounded ml-52" onClick={(e)=>{setComponentCreateEditView(
-                    <MultipleChangeClass ondone={effectsAfterCreateEditViewComponentDisabled} selected_ids={selectedIds}/>
+                    <MultipleChangeClass ondone={effectsAfterCreateEditViewComponentDisabled} selected_ids={selectedIds} start_loading_animation={startLoadingAnimation} stop_loading_animation={stopLoadingAnimation}/>
                 )}}>Change Class</button>
             )
         }
@@ -385,7 +364,6 @@ function Students()
 
     const clearFilters = () => {
         setFilterOptions({'student_name':'','stud_class_name':'','batch_name':'','register_no':''});
-        // getAllAttendances();
         getStudents();
     }
 
@@ -397,15 +375,11 @@ function Students()
     const tbodyclassName = "bg-grey-100 divide-y divide-gray-200 dark:bg-stone-800 dark:divide-gray-700"
     const tdtrclassName = "hover:bg-gray-100 dark:hover:bg-gray-700";
 
-    {/*<div className="tb-width">
-    <table className='table table-layout:auto table-hover table-striped'>*/}
-
     useLayoutEffect(()=>{
         getUserTypeAndStudClassName();
         getStudents();
 
 
-        //getStudClass();
     },[])
 
     useEffect(()=>{
@@ -428,9 +402,8 @@ function Students()
     useEffect(()=>{
         getTBodyComponent();
         getTopButtons();
-        //getAllStudClasses();
     }
-    ,[createButtonDisabled,createComponent,students])
+    ,[createButtonDisabled,students])
 
 
 

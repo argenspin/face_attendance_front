@@ -1,7 +1,6 @@
 {
   "name": "web-frontend",
   "version": "0.1.0",
-  "proxy": "http://127.0.0.1:8000/",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
@@ -14,11 +13,13 @@
     "bootstrap": "^5.2.3",
     "crypto-js": "^4.1.1",
     "font-awesome": "^4.7.0",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.4",
     "react-scripts": "5.0.1",
+    "react-spinners": "^0.13.7",
     "react-table": "^7.8.0",
     "react-webcam": "^7.0.1",
     "serve": "^14.1.2",

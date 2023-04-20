@@ -16,15 +16,12 @@ function EditTeacher(props){
         await axiosInstance
         .post('teacher/edit/',form_data)
         .then(res=>{
-            //alert("New Teacher created succesfully. Login details have been sent to the teacher's mail address")
             props.ondone('save');
             console.log(res.data)
         })
         .catch(err => {
             console.log(err);
         })
-         //hide the create component by calling parent function effectsAfterComponentDisabled
-
 
     }
 

@@ -4,41 +4,22 @@ import { axiosInstance } from '../axiosinstance';
 
 const FaceCapture = (props) => {
 
-    axiosInstance.defaults.timeout = 10000
+    axiosInstance.defaults.timeout = 30000
 
     const videoConstraints = {
         width: 1280,
         height: 720,
-        facingMode: "environment"
+        facingMode: "user"
       };
     
     const [viewMode,setViewMode] = useState(props.viewmode)
     const [imageSrc,setImageSrc] = useState(props.imageSrc)
     const [multipleFacePhotoB64,setMulitpleFacePhotoB64] = useState([])
-    const [userType,setUserType] = useState(props.usertype)
     const [bottomButtons,setBottomButtons] = useState([])
     const [noOfCapturedImages,setNoOfCapturedImages] = useState(0);
-    //const [allCaptured,setAllCaptured] = useState(false);
     const [imagesConfirmButton,setImagesConfirmButton] = useState([])
     const [facePreviewComponent,setFacePreviewComponent] = useState([])
     const [captureButtonDisabled,setCaptureButtonDisabled] = useState(false)
-
-    // const getBottomButtons = () => {
-    //     if(userType==='admin')
-    //     {
-    //         setBottomButtons(
-    //             <div>
-    //             <button className='bg-green-600 text-white py-0 px-3 shadow appearance-none border rounded m-1' onClick={reTakePhoto}>Retake</button>
-    //             <button className='bg-red-600 text-white py-0 px-3 shadow appearance-none border rounded' onClick={faceCaptureCancel}>Cancel</button>
-    //             </div>
-    //         )
-    //     }
-    //     else{
-    //         setBottomButtons(
-    //             null
-    //         )
-    //     }
-    // }
 
     const webcamRef = useRef(null);
 
@@ -58,19 +39,10 @@ const FaceCapture = (props) => {
     }
 
     const capture = () => {
-        //setViewMode('preview')
-        //setImageSrc((webcamRef.current.getScreenshot()).toString());
-        //There is a delay in updating the state of imageSrc, that's why it is called 2 times
-        //console.log("all captured ref: "+allCaptured)
         setCaptureButtonDisabled(true)
         let image = (webcamRef.current.getScreenshot())
         checkIfPhotoIsValid(image);
-
-        //checkIfPhotoIsValid(image);
         console.log(noOfCapturedImages)
-        //console.log(image)
-        //props.oncapture((webcamRef.current.getScreenshot()).toString(), JSON.stringify(image));
-        //console.log(imageSrc);
     }
 
 
@@ -80,13 +52,9 @@ const FaceCapture = (props) => {
         await axiosInstance
         .post('face_photo/check_valid/',form_data)
         .then(res=> {
-            //displayNoOfCapturedImages();
             setCaptureButtonDisabled(false)
             setNoOfCapturedImages(prevState => prevState+1);
-            //getIfAllImagesAreCaptured();
-            //console.log('photo valid')
             setMulitpleFacePhotoB64(prevState => [...prevState,face_photo_b64]);
-            
             setViewMode('capture')
         })
         .catch(err=>{
@@ -95,32 +63,11 @@ const FaceCapture = (props) => {
             console.log(err);
             setViewMode('capture')
         })
-
-
     }
 
     const faceCaptureCancel = () => {
-        // if(imageSrc)
-        // {
-        //     setViewMode('edit')
-        // }
-        // else
-        // {
-        //     props.func();
-        // }
         props.ondone();
     }
-
-    // const reTakePhoto = () => {
-    //     setViewMode('capture');
-    // }
-
-    //debug function
-    // const displayNoOfCapturedImages = () => {
-    //     console.log(multipleFacePhotoB64)
-    //     console.log(noOfCapturedImages)
-    //     //console.log("all images captured: "+allCaptured)
-    // }
 
     const checkIfAllImagesAreCaptured = () => {
         console.log(multipleFacePhotoB64)
@@ -150,9 +97,6 @@ const FaceCapture = (props) => {
 
     useEffect(()=>{
         checkIfAllImagesAreCaptured()
-        //getIfAllImagesAreCaptured();
-        //displayNoOfCapturedImages();
-        //getBottomButtons();
     },[noOfCapturedImages])
 
         if(viewMode==='capture')

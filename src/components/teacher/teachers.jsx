@@ -1,25 +1,13 @@
 import {React,useLayoutEffect,useState,useEffect} from "react";
-import axios from 'axios'
-
 import { axiosInstance } from "../axiosinstance";
 import CreateTeacher from "./createteacher";
 import EditTeacher from "./editteacher";
 function Teachers(){
 
-    const [accessValid,setAccessValid] = useState(true);
     const [teachers,setTeachers] = useState([])
-    
-    const [studClassName,setStudClassName] = useState('')
-    const [studClassTeacher,setStudClassTeacher] = useState('')
-
-    const [editComponent,setEditComponent] = useState([])
     const [editButtonDisabled,setEditButtonDisabled] = useState(false)
-
     const [deleteButtonDisabled,setDeleteButonDisabled] = useState(false)
-
     const [componentCreateEdit,setComponentCreateEdit] = useState([])
-
-    const [createComponent,setCreateComponent] = useState([])
     const [createButtonDisabled,setCreateButtonDisabled] = useState(false);
 
 
@@ -29,51 +17,22 @@ function Teachers(){
     
     const getTeachers = async() => {
         setTeachers([])
-        //let showTeachersTemp = !showTeachers;
-        //setShowTeachers(showTeachersTemp);
         console.log(teachers.length)
-        //if(teachers.length===0)
-        //{
-            await axiosInstance
-            .get('teacher/retrieve/')
-            .then(res=> {
-                let data = res.data;
-                let k=1;
-                for(let i=0;i<data.length;i++)
-                {
-                    data[i].sl_no = k++;
-                    console.log(data[i].sl_no)
-                }
-                setTeachers((data))
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }
-
-    const effectsAfterCreateComponentDisabled = (save_or_cancel) => {
-        if(save_or_cancel==='save')
-        {
-            getTeachers();
-        }
-        resetTableOpacity();
-        setCreateComponent([]);
-        setEditButtonDisabled(false);
-        setCreateButtonDisabled(false);
-        setDeleteButonDisabled(false)
-
-    }
-
-    const effectsAfterEditComponentDisabled = (save_or_cancel) => {
-        if(save_or_cancel==='save')
-        {
-            getTeachers();
-        }
-        resetTableOpacity();
-        setEditComponent([]);
-        setEditButtonDisabled(false);
-        setCreateButtonDisabled(false);
-        setDeleteButonDisabled(false)
+        await axiosInstance
+        .get('teacher/retrieve/')
+        .then(res=> {
+            let data = res.data;
+            let k=1;
+            for(let i=0;i<data.length;i++)
+            {
+                data[i].sl_no = k++;
+                console.log(data[i].sl_no)
+            }
+            setTeachers((data))
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     const effectsAfterCreateEditComponentDisabled = (save_or_cancel) => {
@@ -88,7 +47,6 @@ function Teachers(){
         setDeleteButonDisabled(false)
     }
 
-
     const createTeacher = (e) => {
         e.preventDefault();
         setCreateButtonDisabled(true);
@@ -99,9 +57,6 @@ function Teachers(){
             <CreateTeacher ondone={effectsAfterCreateEditComponentDisabled}/>
         )
     }
-
-    //const [teacherEditData,setteacherEditData] = useState({});
-
 
     const editTeacher = (e,teacher_data) => {
         e.preventDefault();
@@ -135,13 +90,7 @@ function Teachers(){
 
     }
 
-
-
-
-
     const [tableclassName,settableClassName] = useState("min-w-full min-w-full divide-y divide-gray-200 table-auto dark:divide-gray-700 ")
-
-
     const thclassName = "py-2 px-4 text-sm font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-200";
     const tdclassName = "py-1 px-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white";
     const theadclassName = "bg-gray-100 dark:bg-stone-900"

@@ -109,8 +109,6 @@ function CreateSubject(props){
 
             console.log(err);
         })
-         //hide the create component by calling parent function effectsAfterComponentDisabled
-
 
     }
 

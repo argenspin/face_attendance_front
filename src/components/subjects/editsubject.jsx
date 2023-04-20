@@ -190,25 +190,6 @@ function EditSubject(props){
                 setShowLabSelection(!showLabSelection);
             }} />
             <br/>
-            {/* <select id='student_class' className="border rounded py-1 px-1 text-gray-700 leading-tight " defaultValue={newData['lab_name']} onChange={(e)=>{setNewData(prevState => ({
-                    ...prevState, ['lab_name']:e.target.value
-            })
-            )
-            }} >
-                <option value={newData['lab_name']} key={newData['lab_name']}>{newData['lab_name']}</option>
-                <option value={''} key={''}></option>
-                {
-                    studClasses.map( ({stud_class_name}) => {
-                        if(stud_class_name!==newData['lab_name'])
-                        {
-                            return (
-                                <option value={stud_class_name} key={stud_class_name}>{stud_class_name}</option>
-                            )
-                        }
-                    }
-                )
-                }
-            </select> */}
             {labSelectionComponent}
             <br/>
             <div className="m-2">

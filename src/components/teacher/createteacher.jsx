@@ -9,27 +9,40 @@ function CreateTeacher(props){
     const createTeacherSave = async(e) => {
 
         e.preventDefault();
-        console.log(newData)
-        let form_data = new FormData();
-        form_data.append('name',newData['name']);
-        form_data.append('email',newData['email']);
-        form_data.append('username',newData['email']) //Set email as the username
-        // form_data.append('subject',newData['subject']);
-        await axiosInstance
-        .post('teacher/create/',form_data)
-        .then(res=>{
-            //alert("New Teacher created succesfully. Login details have been sent to the teacher's mail address")
-            props.ondone('save');
-            console.log(res.data)
-        })
-        .catch(err => {
-            alert("Couldn't create the teacher. Maybe a teacher with same email already exists?")
+        if(validateForm())
+        {
+            console.log(newData)
+            let form_data = new FormData();
+            form_data.append('name',newData['name']);
+            form_data.append('email',newData['email']);
+            form_data.append('username',newData['email']) //Set email as the username
+            await axiosInstance
+            .post('teacher/create/',form_data)
+            .then(res=>{
+                props.ondone('save');
+                console.log(res.data)
+            })
+            .catch(err => {
+                alert("Couldn't create the teacher. Maybe a teacher with same email already exists?")
 
-            console.log(err);
-        })
-         //hide the create component by calling parent function effectsAfterComponentDisabled
+                console.log(err);
+            })
+        }
 
+    }
 
+    const validateForm = () => {
+        if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newData['email'])))
+        {
+            alert("Invalid Email address!")
+            return false;
+        }
+        else if(newData['name']==='' || newData['email']==='')
+        {
+            alert('fields cannot be empty')
+            return false;
+        }
+        return true
     }
 
     const createTeacherCancel = (e) => {

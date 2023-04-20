@@ -1,10 +1,9 @@
 import axios from "axios";
-import {React,useEffect,useLayoutEffect,useState} from "react";
+import {React,useEffect,useState} from "react";
 import NavBar from "./NavBar";
-import {useNavigate,Navigate, useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import '../css/test_login.css';
 import userlogo from '../img/userlogo.png';
-import { Link } from "react-router-dom";
 
 function Registration(){
 
@@ -14,6 +13,7 @@ function Registration(){
     const [username,setUsername] = useState('')
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [confirmpass,setConfirmPass] = useState('')
     const [accessToken,setAccessToken] = useState('')
     const [mainComponent,setMainComponent] = useState('')
     const [alreadyRegistered,setAlreadyRegistered] = useState(false)
@@ -66,16 +66,19 @@ function Registration(){
 
   }
     const validateForm = () => {
-        if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)))
+        if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(username)))
         {
-          //valid=false
           alert("Invalid Email address")
           return false;
         }
         if(password==='' || username==='')
         {
-          //valid=false;
           alert("Fields cannot be empty")
+          return false;
+        }
+        if(password!==confirmpass)
+        {
+          alert("Passwords do not match");
           return false;
         }
         return true;
@@ -83,7 +86,7 @@ function Registration(){
 
     const submitForm = (e) => {
       e.preventDefault();
-        if(1)
+        if(validateForm())
         {
             let form_data = new FormData();
             form_data.append('name',teachername)
@@ -140,12 +143,10 @@ function Registration(){
                 </div>
 
                 <div className="row">
-                  {/*<span className="fa fa-lock"></span>*/}
                   <input type="password" name="password" id="password" className="form__input" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className="row">
-                  {/*<span className="fa fa-lock"></span>*/}
-                  <input type="password" name="password_confirm" id="password_confirm" className="form__input" placeholder="Confirm Password" onChange={(e) => setPassword(e.target.value)} />
+                  <input type="password" name="password_confirm" id="password_confirm" className="form__input" placeholder="Confirm Password" onChange={(e) => setConfirmPass(e.target.value)} />
                 </div>
   
                 <div className="row">

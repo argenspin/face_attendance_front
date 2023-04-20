@@ -1,23 +1,15 @@
 
 import React, { useState } from "react";
 import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link,
     Navigate,
     useNavigate,
   } from "react-router-dom";
-//import 'bootstrap/dist/css/bootstrap.css'
-import Form from 'react-bootstrap/Form';
 import '../css/form_style.css'
-import axios from "axios"
 import NavBar from "./NavBar";
-import Dashboard from "./home";
 import '../css/test_login.css'
-import ihrdlogo from '../img/ihrdlogo.png';
 import userlogo from '../img/userlogo.png';
 import { axiosInstance } from "./axiosinstance";
+import ForgotPassword from "./forgotpassword";
 
 function Login(props){
 
@@ -45,13 +37,15 @@ axiosInstance.interceptors.request.use(
   const [password,setPassword] = useState('')
   const [username, setUsername] = useState('')
 
+  const [forgotEmail,setForgotEmail] = useState('')
+  const [forgotPasswordComponent,setForgotPasswordComponent] = useState([])
   const validateForm = () => {
     let valid = true; 
-    /*if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)))
+    if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(username)))
     {
       valid=false
       alert("Invalid Email address")
-    }*/
+    }
     if(password==='' || username==='')
     {
       valid=false;
@@ -80,9 +74,17 @@ axiosInstance.interceptors.request.use(
     
   }
 
-  const gotoRegistration = () => {
-    navigate('/register');
+  const effectsAfterForgotComponentDisabled = () => {
+    setForgotPasswordComponent([]);
+
   }
+
+  const getForgotPasswordComponent = () => {
+    setForgotPasswordComponent(
+      <ForgotPassword ondone={effectsAfterForgotComponentDisabled}/>
+    )
+  }
+
   if(!localStorage.getItem('access'))
   {
 
@@ -96,6 +98,7 @@ axiosInstance.interceptors.request.use(
     <div className="container-fluid">
 
 		<div className="flex flex-wrap  main-content bg-gray-500 text-center">
+    {forgotPasswordComponent}
 			<div className="md:w-1/3 pr-4 pl-4 text-center company__info">
 				<img src={userlogo}/>
 			</div>
@@ -110,13 +113,12 @@ axiosInstance.interceptors.request.use(
 								<input type="text" name="username" id="username" className="form__input" placeholder="Username" onChange={(e) => setUsername(e.target.value)}/>
 							</div>
 							<div className="flex flex-wrap ">
-								{/*<span className="fa fa-lock"></span>*/}
 								<input type="password" name="password" id="password" className="form__input" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
 							</div>
 
 							<div className="flex flex-wrap ">
 								<input type="submit" value="Submit" className="btn_login" onClick={(e)=>submitForm(e)}/>
-                <input type="button" value="Forgot Password" className="btn_login" />
+                <input type="button" value="Forgot Password" className="btn_login" onClick={getForgotPasswordComponent} />
               </div>
 						</form>
 					</div>
@@ -129,7 +131,6 @@ axiosInstance.interceptors.request.use(
   }
   else
   {
-    //props.func(username) //Calling the 'func' props to return value to parent component
     return(
       <Navigate to='/home/dashboard'/>
     

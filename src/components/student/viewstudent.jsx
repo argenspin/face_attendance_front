@@ -68,7 +68,7 @@ function ViewStudent(props){
               
                 </div>
                 <div>
-                    <FaceCapture /*func={hideFaceCaptureComponent} key={viewMode} viewmode={viewMode} usertype={userType}*/ imageSrc={data['face_photo_b64']} viewmode='view'/>
+                    <FaceCapture imageSrc={data['face_photo_b64']} viewmode='view'/>
                 </div>
                 <div className="m-5">
                     <button className='bg-blue-600 text-white py-1 px-3 m-2 shadow appearance-none border rounded' type="button" onClick={() => props.ondone()}>Ok</button>

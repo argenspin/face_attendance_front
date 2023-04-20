@@ -3,7 +3,7 @@ import axios from "axios";
 export const axiosInstance = axios.create({
     baseURL: '/api/',
     headers: {'Content-Type':'multipart/form-data'},
-    timeout: 1000
+    timeout: 3000
 })
 
 axiosInstance.interceptors.response.use(

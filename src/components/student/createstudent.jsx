@@ -4,7 +4,7 @@ import FaceCapture from "./facecapture";
 
 function CreateStudent(props){
 
-    axiosInstance.defaults.timeout = 15000
+    axiosInstance.defaults.timeout = 30000
 
     const [newData,setNewData] = useState({'name':'','stud_class_name':'','face_photo_b64':'', 'multiple_images':[],'register_no':'','dob':'','batch':''});
     const [studClasses,setStudClasses] = useState([])
@@ -21,8 +21,6 @@ function CreateStudent(props){
         .then(res => {
             data = res.data;
             setStudClasses(data)
-
-            //console.log(data)
         })
         .catch(err => {
             console.log(err);
@@ -43,7 +41,6 @@ function CreateStudent(props){
     const createStudentSave = (e) => {
         e.preventDefault();
         console.log(newData)
-        //console.log(multipleImages)
         let form_data = new FormData();
         form_data.append('name',newData['name']);
         form_data.append('stud_class_name',newData['stud_class_name']);
@@ -89,11 +86,6 @@ function CreateStudent(props){
         console.log(viewMode)
         setSaveButtonDisabled(true)
         setViewMode('capture')
-        // setFaceCaptureComponent(
-        //     <FaceCapture func={hideFaceCaptureComponent}  viewmode={'capture'} usertype={userType} imageSrc={newData['face_photo_b64']} on_all_images_captured={onAllImagesCaptured}
-        //     />
-        // )
-
     }
 
     const getFaceCaptureComponent = () => {
@@ -102,7 +94,6 @@ function CreateStudent(props){
             setFaceCaptureComponent(
                 <FaceCapture ondone={hideFaceCaptureComponent} key={viewMode} viewmode={viewMode} imageSrc={newData['face_photo_b64']}/>
                 )
-
         }
         else if(viewMode==='capture')
         {
@@ -145,8 +136,6 @@ function CreateStudent(props){
 
     useEffect(()=> {
         getFaceCaptureComponent();
-        // console.log(newData)
-        // console.log(multipleImages)
     },[viewMode])
 
         return(
@@ -225,8 +214,6 @@ function CreateStudent(props){
             <br/>
             <div className="m-3">
             <button className='bg-blue-600 text-white py-1 px-3 m-2 shadow appearance-none border rounded' disabled={saveButtonDisabled} type="button" onClick={(e)=> {createStudentSave(e)} }>Save</button>
-            {/*saveButtonComponent*/}
-
             <button className='bg-red-800 text-white py-1 px-3 shadow appearance-none border rounded'type="button" onClick={(e)=> {createStudentCancel(e)}}>Cancel</button> 
             </div>
         </div>

@@ -19,5 +19,4 @@ export function decryptData(loggedUser,refresh_token){
 }
 
 //The below line of code is used in some places to decrypt the loggedUser as it is stored by encrypting the username after logging in
-//const loggedUser = decryptData(localStorage.getItem('loggedUser'),localStorage.getItem('refresh'))
 
