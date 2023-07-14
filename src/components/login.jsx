@@ -110,7 +110,7 @@ axiosInstance.interceptors.request.use(
 					<div className="flex flex-wrap ">
 						<form control="" className="mb-4">
 							<div className="flex flex-wrap ">
-								<input type="text" name="username" id="username" className="form__input" placeholder="Username" onChange={(e) => setUsername(e.target.value)}/>
+								<input type="text" name="username" id="username" className="form__input" placeholder="Username Here" onChange={(e) => setUsername(e.target.value)}/>
 							</div>
 							<div className="flex flex-wrap ">
 								<input type="password" name="password" id="password" className="form__input" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
